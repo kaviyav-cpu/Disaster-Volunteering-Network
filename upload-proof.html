@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Completion Proof - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <h1>Upload Verification Proof</h1>
+    </div>
+    <nav>
+      <a href="volunteer-dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="auth-container">
+    <section class="card">
+      <h2>Submit Deployment Record</h2>
+      <form id="uploadForm" onsubmit="handleUploadSubmit(event)">
+        <div class="form-group">
+          <label for="hours">Hours Spent on Site: </label>
+          <input type="range" id="hours" min="1" max="12" value="4" oninput="updateOutput(this.value)">
+          <p>Claiming: <output id="hourOutput">4</output> hours</p>
+        </div>
+
+        <div class="form-group">
+          <label for="proof-file">Upload Image/Report Proof</label>
+          <input type="file" id="proof-file" accept="image/*" required onchange="previewImage(event)">
+        </div>
+
+        <img id="imgPreview" style="max-width:100%; display:none; margin-bottom:10px; border-radius:4px;">
+
+        <button type="submit" class="btn" style="width: 100%;">Submit Proof</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
+</body>
+</html>

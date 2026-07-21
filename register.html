@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <h1>Disaster Volunteering Network</h1>
+    </div>
+  </header>
+
+  <main class="auth-container">
+    <section class="card">
+      <h2>Join the Network</h2>
+      <p style="margin-bottom: 1rem; color: #666;">Create an account to start helping.</p>
+
+      <form id="regForm" onsubmit="handleRegisterSubmit(event)">
+        <div class="form-group">
+          <label for="role">Registering as:</label>
+          <select id="role" onchange="handleRoleChange(this)">
+            <option value="volunteer">Volunteer</option>
+            <option value="ngo">NGO / Organization Representative</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fullname">Full Name / Org Name</label>
+          <input type="text" id="fullname" required>
+        </div>
+        
+        <div class="form-group" id="ngoRegField" style="display: none;">
+          <label for="registrationNo">NGO Registration Number</label>
+          <input type="text" id="registrationNo" placeholder="REG-123456">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" required>
+        </div>
+        <div class="form-group">
+          <label for="city">City / Region</label>
+          <input list="cities" id="city" placeholder="Type or select a city">
+          <datalist id="cities">
+            <option value="California, USA">
+            <option value="London, UK">
+            <option value="Tokyo, Japan">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="reg-pass">Password</label>
+          <input type="password" id="reg-pass" required>
+        </div>
+        <button type="submit" class="btn" style="width: 100%;">Create Account</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,274 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+header {
+  background-color: #0d9488;
+  color: white;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-logo {
+  height: 38px;
+  width: auto;
+  border-radius: 4px;
+}
+
+/* Header Links & Top-Right Login */
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.top-right-nav .login-btn {
+  background-color: #ffffff;
+  color: #0d9488;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.top-right-nav .login-btn:hover {
+  background-color: #f0fdf4;
+}
+
+/* ==========================================================================
+   SIDEBAR & LAYOUT STRUCTURE
+   ========================================================================== */
+.app-container {
+  display: flex;
+  margin-top: 60px; /* Offset for fixed header */
+  min-height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e293b;
+  color: white;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.sidebar-nav {
+  list-style: none;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: #0d9488;
+  color: white;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   MAIN CONTENT & CARDS
+   ========================================================================== */
+main {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.main-content {
+  margin-left: 250px; /* Offset for sidebar width */
+  padding: 2rem;
+  flex: 1;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.auth-container {
+  max-width: 450px;
+  margin: 4rem auto;
+}
+
+/* ==========================================================================
+   AUDIO PLAYER & UI UTILITIES
+   ========================================================================== */
+.audio-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.audio-box h4 {
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+/* JS Toast Notification */
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #1e293b;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 12px;
+  position: fixed;
+  z-index: 1000;
+  right: 30px;
+  bottom: 30px;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#toast.show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from { bottom: 0; opacity: 0; }
+  to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { bottom: 30px; opacity: 1; }
+  to { bottom: 0; opacity: 0; }
+}
+
+/* ==========================================================================
+   FORMS & BUTTONS
+   ========================================================================== */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn {
+  background-color: #0d9488;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn:hover {
+  background-color: #0f766e;
+}
+
+/* Badges */
+.badge {
+  background-color: #ccfbf1;
+  color: #0f766e;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Data Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #1e293b;
+  color: #94a3b8;
+  margin-left: 250px;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <h1>Disaster Volunteering Network</h1>
+    </div>
+    <div class="top-right-nav">
+      <a href="login.html" class="login-btn">Login</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Navigation Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html" class="active"> Home & Join</a></li>
+        <li><a href="register.html"> Register Page</a></li>
+        <li><a href="volunteer-dashboard.html"> Volunteer Dashboard</a></li>
+        <li><a href="ngo-dashboard.html"> NGO Dashboard</a></li>
+        <li><a href="task-details.html"> Task Details</a></li>
+        <li><a href="profile.html"> User Profile</a></li>
+        <li><a href="upload-proof.html"> Upload Proof Page</a></li>
+        <li><a href="skill-matching.html"> Skill Task Matching</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <section class="card">
+        <h2>Connecting Volunteers with Rapid Disaster Relief</h2>
+        <p style="margin-top: 0.5rem; color: #555;">
+          Join thousands of trained responders and NGOs responding in real-time to natural disasters, flood emergency tasks, and community relief efforts.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a href="register.html" class="btn">Get Started - Register Now</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>🎙️ Live Emergency Dispatch Audio Broadcast</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
+          Listen to the latest audio warning and crisis updates broadcasted across network hubs.
+        </p>
+        
+        <div class="audio-box">
+          <audio id="homeAudio" controls style="width: 100%;">
+            <source src="C:\Users\mithr\Documents\Disaster_Volunteering\alert.mp3.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+          <div style="margin-top: 8px; display: flex; gap: 8px;">
+            <button onclick="playAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem;">▶ Play Sound</button>
+            <button onclick="pauseAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem; background: #64748b;">⏸ Pause</button>
+          </div>
+        </div>
+      </section>
+
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+        <article class="card">
+          <h3>For Volunteers</h3>
+          <p style="margin: 0.5rem 0;">Find active deployments matching your specific verified skills such as EMT, Water Rescue, and Shelter Management.</p>
+          <a href="skill-matching.html" style="color: #0d9488; font-weight: bold;">Browse Matching Tasks &rarr;</a>
+        </article>
+
+        <article class="card">
+          <h3>For NGOs & Coordinators</h3>
+          <p style="margin: 0.5rem 0;">Post urgent resource requests, organize team logistics, and verify proof of work submitted by volunteers.</p>
+          <a href="ngo-dashboard.html" style="color: #0d9488; font-weight: bold;">Access NGO Portal &rarr;</a>
+        </article>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
+</body>
+</html>

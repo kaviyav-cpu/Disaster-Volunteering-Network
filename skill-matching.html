@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skill-Based Task Matching - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <h1>Skill-Based Task Engine</h1>
+    </div>
+    <nav>
+      <a href="volunteer-dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Automated Skill Recommendations</h2>
+      <p>Filter by Skill:</p>
+      <button class="btn" onclick="filterBySkill('all')">Show All</button>
+      <button class="btn" onclick="filterBySkill('EMT')">EMT First Aid</button>
+      <button class="btn" onclick="filterBySkill('Rescue')">Water Rescue</button>
+    </section>
+
+    <div id="taskList">
+      <section class="card task-card" data-skill="EMT">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3>Medical Team Lead - Hurricane Recovery</h3>
+            <p style="color: #666;">Requires: EMT Certification • Match Rating: <span class="badge">98% Match</span></p>
+          </div>
+          <a href="task-details.html" class="btn">Apply Now</a>
+        </div>
+      </section>
+
+      <section class="card task-card" data-skill="Rescue">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3>Flood Rescue Boat Handler</h3>
+            <p style="color: #666;">Requires: Water Rescue Badge • Match Rating: <span class="badge">90% Match</span></p>
+          </div>
+          <a href="task-details.html" class="btn">Apply Now</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
+</body>
+</html>

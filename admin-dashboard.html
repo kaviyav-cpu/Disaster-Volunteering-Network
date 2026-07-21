@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header style="background-color: #1e293b;">
+    <div class="header-brand">
+      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <h1>System Administration Console</h1>
+    </div>
+    <nav>
+      <a href="login.html">System Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+      <div class="card" style="text-align: center;">
+        <p style="color: #666;">Total Volunteers</p>
+        <h2 id="volCount">12,450</h2>
+      </div>
+      <div class="card" style="text-align: center;">
+        <p style="color: #666;">Registered NGOs</p>
+        <h2>380</h2>
+      </div>
+      <div class="card" style="text-align: center;">
+        <p style="color: #666;">System Status</p>
+        <h2><mark style="background-color: #dcfce7; color: #166534;">ALL ONLINE</mark></h2>
+      </div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex; justify-space-between; align-items:center; margin-bottom:10px;">
+        <h3>Verified System Log Entries</h3>
+        <input type="text" id="logSearch" placeholder="Search logs..." onkeyup="filterLogs()" style="padding:4px 8px;">
+      </div>
+      
+      <table id="logTable">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Event Log</th>
+            <th>Source IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026-07-20 19:40</td>
+            <td>New NGO Verification Approved (GlobalMedic)</td>
+            <td>192.168.1.1</td>
+          </tr>
+          <tr>
+            <td>2026-07-20 18:22</td>
+            <td>Database Backup Automated Command</td>
+            <td>10.0.0.4</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
+</body>
+</html>
