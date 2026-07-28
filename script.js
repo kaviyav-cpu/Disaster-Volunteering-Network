@@ -1,3 +1,8 @@
+
+MITHRA D <mithra@student.tce.edu>
+9:22 AM (2 minutes ago)
+to me
+
 // ==========================================
 // Admin Dashboard Functions
 // ==========================================
@@ -180,3 +185,109 @@ function handleUploadSubmit(event) {
   alert('Verification proof submitted to coordinator!');
   window.location.href = 'volunteer-dashboard.html';
 }
+
+// ======================
+// AngularJS Module
+// ======================
+
+var app = angular.module("myApp", []);
+
+// ======================
+// AngularJS Controller
+// ======================
+
+app.controller("LoginController", function($scope){
+
+    $scope.email = "";
+    $scope.password = "";
+    $scope.message = "";
+
+   $scope.login = function () {
+
+    localStorage.setItem("userEmail", $scope.email);
+
+    var name = $scope.email.split("@")[0];
+
+    localStorage.setItem("userName", name);
+
+    $scope.message = "Login Successful! Welcome " + $scope.email;
+
+};
+
+});
+app.controller("TaskController", function($scope){
+
+    //==========================
+    // Controller
+    //==========================
+
+    $scope.status = "Not Applied";
+
+    $scope.applyTask = function(){
+
+        $scope.status = "Application Submitted Successfully";
+
+    };
+
+    //==========================
+    // Data for Filters
+    //==========================
+
+    $scope.priority = "Urgent Requirement";
+
+    $scope.taskName = "Food Distribution - City Center Shelter";
+
+    $scope.organization = "Red Cross • Sector 4 Disaster Zone";
+
+    $scope.description =
+    "Assist with unloading, sorting, and distributing food packages and clean water to families affected by recent flooding.";
+
+    $scope.today = new Date();
+
+    $scope.budget = 25000;
+
+    $scope.skills = [
+        "Food Distribution",
+        "First Aid",
+        "Medical Support",
+        "Water Rescue"
+    ];
+
+});
+
+// Value
+app.value("organizationName", "Disaster Volunteering Network");
+
+// Service
+app.service("VolunteerService", function () {
+
+    this.getVolunteer = function () {
+
+        return {
+            name: localStorage.getItem("userName") || "",
+            email: localStorage.getItem("userEmail") || "",
+            location: "California, USA",
+            skills: []
+        };
+
+    };
+
+});
+// Controller
+app.controller("ProfileController", function ($scope, organizationName, VolunteerService) {
+
+    $scope.organization = organizationName;
+
+    $scope.volunteer = VolunteerService.getVolunteer();
+
+    $scope.addSkill = function () {
+
+        var skill = prompt("Enter New Skill");
+
+        if (skill) {
+            $scope.volunteer.skills.push(skill);
+        }
+
+    };
+
+});
