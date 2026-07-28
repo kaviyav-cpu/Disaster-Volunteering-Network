@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-
     <link rel="stylesheet" href="style.css">
-
     <!-- AngularJS Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-
     <!-- Your JavaScript -->
     <script src="script.js" defer></script>
 </head>
@@ -22,7 +19,6 @@
       <a href="volunteer-dashboard.html">Dashboard</a>
     </nav>
   </header>
-
   <main class="auth-container" style="max-width: 600px;">
     <section class="card" style="text-align: center;">
       <figure>
@@ -31,24 +27,16 @@
            {{volunteer.name}} (Verified Volunteer)
         </figcaption>
       </figure>
-
      <div style="text-align: left; margin-top: 1rem;">
-
     <p><strong>Organization:</strong> {{organization}}</p>
-
     <p><strong>Email:</strong> {{volunteer.email}}</p>
-
     <p><strong>Location:</strong> {{volunteer.location}}</p>
-
     <h4 style="margin-top: 1rem;">Skills & Badges:</h4>
-
     <div id="badgeContainer"
          style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-
         <span class="badge" ng-repeat="skill in volunteer.skills">
             {{skill}}
         </span>
-
     </div>
 <div>
    <button class="btn"
@@ -57,15 +45,9 @@
     + Add New Skill Tag
 </button>
 </div>
-
-   
-
-</div>
-
-      
+</div>  
     </section>
   </main>
-
   <footer>
     <p>&copy; 2026 Disaster Volunteering Network</p>
   </footer>
