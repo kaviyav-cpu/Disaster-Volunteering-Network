@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User Profile - Disaster Volunteering Network</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- Your JavaScript -->
+    <script src="script.js" defer></script>
 </head>
-<body>
+<body ng-app="myApp" ng-controller="ProfileController">
   <header>
     <div class="header-brand">
-      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <img src="C:\Users\mithr\Documents\Disaster_Volunteering\logo\logo.png" alt="Logo" class="header-logo">
       <h1>User Profile</h1>
     </div>
     <nav>
@@ -21,21 +27,42 @@
     <section class="card" style="text-align: center;">
       <figure>
         <img src="avatar-placeholder.png" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; background: #ddd; margin: 0 auto;">
-        <figcaption style="margin-top: 0.5rem; color: #666;">Jane Doe (Verified Volunteer)</figcaption>
+        <figcaption style="margin-top: 0.5rem; color: #666;">
+           {{volunteer.name}} (Verified Volunteer)
+        </figcaption>
       </figure>
 
-      <div style="text-align: left; margin-top: 1rem;">
-        <p><strong>Email:</strong> jane.doe@example.com</p>
-        <p><strong>Location:</strong> California, USA</p>
-        
-        <h4 style="margin-top: 1rem;">Skills & Badges:</h4>
-        <div id="badgeContainer" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <span class="badge">EMT First Aid</span>
-          <span class="badge">Water Rescue</span>
-        </div>
+     <div style="text-align: left; margin-top: 1rem;">
 
-        <button class="btn" style="margin-top: 1rem; width:100%;" onclick="addSkill()">+ Add New Skill Tag</button>
-      </div>
+    <p><strong>Organization:</strong> {{organization}}</p>
+
+    <p><strong>Email:</strong> {{volunteer.email}}</p>
+
+    <p><strong>Location:</strong> {{volunteer.location}}</p>
+
+    <h4 style="margin-top: 1rem;">Skills & Badges:</h4>
+
+    <div id="badgeContainer"
+         style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+
+        <span class="badge" ng-repeat="skill in volunteer.skills">
+            {{skill}}
+        </span>
+
+    </div>
+<div>
+   <button class="btn"
+        style="margin-top: 1rem; width:100%;"
+        ng-click="addSkill()">
+    + Add New Skill Tag
+</button>
+</div>
+
+   
+
+</div>
+
+      
     </section>
   </main>
 
