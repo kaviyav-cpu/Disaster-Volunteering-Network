@@ -3,47 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <title>Login - Disaster Volunteering Network</title>
+
   <link rel="stylesheet" href="style.css">
+
+  <!-- AngularJS Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+ 
   <script src="script.js" defer></script>
+
 </head>
-<body>
+
+<body ng-app="myApp" ng-controller="LoginController">
+
   <header>
     <div class="header-brand">
-      <img src="C:\Users\mithr\Pictures\Screenshots\Screenshot 2026-07-16 233421.png" alt="Logo" class="header-logo">
+      <img src="C:\Users\mithr\Documents\Disaster_Volunteering\logo\logo.png" alt="Logo" class="header-logo">
       <h1>Disaster Volunteering Network</h1>
     </div>
   </header>
 
   <main class="auth-container">
     <section class="card">
+
       <h2>Welcome Back</h2>
-      <p style="margin-bottom: 1rem; color: #666;">Sign in to access your dashboard</p>
-      
-      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+
+      <p style="margin-bottom: 1rem; color: #666;">
+        Sign in to access your dashboard
+      </p>
+
+      <!-- Login Form -->
+      <form id="loginForm" ng-submit="login(); handleLoginSubmit($event)">
+
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" required placeholder="name@example.com">
+
+          <input
+            type="email"
+            id="email"
+            ng-model="email"
+            required
+            placeholder="name@example.com">
         </div>
+
         <div class="form-group">
+
           <label for="password">Password</label>
-          <input type="password" id="password" required placeholder="••••••••">
+
+          <input
+            type="password"
+            id="password"
+            ng-model="password"
+            required
+            placeholder="••••••••">
+
           <label style="font-weight: normal; font-size: 0.85rem; margin-top: 5px;">
-            <input type="checkbox" id="togglePass" onchange="togglePasswordVisibility(this)"> Show Password
+            <input
+              type="checkbox"
+              id="togglePass"
+              onchange="togglePasswordVisibility(this)">
+            Show Password
           </label>
+
         </div>
-        <button type="submit" class="btn" style="width: 100%;">Sign In</button>
+
+        <!-- Interpolation + Two Way Binding -->
+        <p style="color:#666; font-size:14px;">
+          Welcome {{email}}
+        </p>
+
+        <!-- Message from Controller -->
+        <p style="color:green;">
+          {{message}}
+        </p>
+
+        <button
+          type="submit"
+          class="btn"
+          style="width:100%;"
+          ng-disabled="!email || !password">
+
+          Sign In
+
+        </button>
+
       </form>
-      
+
       <p style="margin-top: 1rem; text-align: center;">
-        Don't have an account? <a href="register.html">Register here</a>
+        Don't have an account?
+        <a href="register.html">Register here</a>
       </p>
+
     </section>
   </main>
 
-  <div id="toast">Login successful! Redirecting...</div>
+  <div id="toast">
+    Login successful! Redirecting...
+  </div>
 
   <footer>
     <p>&copy; 2026 Disaster Volunteering Network</p>
   </footer>
+
 </body>
 </html>
