@@ -317,26 +317,67 @@ function pauseAudio() {
   }
 }
 
-// ==========================================
-// Login Page Functions
-// ==========================================
+// ===============================
+// Password Visibility
+// ===============================
+
 function togglePasswordVisibility(checkbox) {
-  const passInput = document.getElementById('password');
-  if (passInput) {
-    passInput.type = checkbox.checked ? 'text' : 'password';
-  }
+
+    const password = document.getElementById("password");
+
+    password.type = checkbox.checked ? "text" : "password";
+
 }
 
-function handleLoginSubmit(event) {
-  event.preventDefault();
-  const toast = document.getElementById('toast');
-  if (toast) {
-    toast.className = 'show';
-    setTimeout(() => {
-      window.location.href = 'volunteer-dashboard.html';
-    }, 1500);
-  }
-}
+// ===============================
+// Angular Module
+// ===============================
+
+var app = angular.module("myApp", []);
+
+// ===============================
+// Login Controller
+// ===============================
+
+app.controller("LoginController", function ($scope) {
+
+    $scope.email = "";
+    $scope.password = "";
+    $scope.message = "";
+
+    $scope.login = function () {
+
+        // Save user information
+
+        localStorage.setItem("userEmail", $scope.email);
+
+        const name = $scope.email.split("@")[0];
+
+        localStorage.setItem("userName", name);
+
+        // Display message
+
+        $scope.message = "Login Successful! Welcome " + name;
+
+        // Show toast
+
+        const toast = document.getElementById("toast");
+
+        if (toast) {
+
+            toast.classList.add("show");
+
+            setTimeout(function () {
+
+                window.location.href = "volunteer-dashboard.html";
+
+            }, 1500);
+
+        }
+
+    };
+
+});
 
 // ==========================================
 // NGO Dashboard Functions
