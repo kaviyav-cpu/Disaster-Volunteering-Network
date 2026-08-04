@@ -1,63 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dvnApp">
 <head>
   <meta charset="UTF-8">
   <title>Register - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
-<body>
+<body ng-controller="RegisterController">
   <header>
     <div class="header-brand">
-      <img src=images/logo.png alt="Logo" class="header-logo">
+      <img src="C:\Users\LENOVO\Documents\SEM4\web\Disaster-Volunteering-Network-main\images\logo.png" alt="Logo" class="header-logo">
       <h1>Disaster Volunteering Network</h1>
     </div>
   </header>
+
   <main class="auth-container">
     <section class="card">
       <h2>Join the Network</h2>
       <p style="margin-bottom: 1rem; color: #666;">Create an account to start helping.</p>
-      <form id="regForm" onsubmit="handleRegisterSubmit(event)">
+
+      <!-- ng-submit replaces onsubmit; no event object needed, no preventDefault to write -->
+      <form id="regForm" ng-submit="submitRegistration()">
         <div class="form-group">
           <label for="role">Registering as:</label>
-          <select id="role" onchange="handleRoleChange(this)">
+          <!-- ng-model two-way binds the dropdown straight to user.role -->
+          <select id="role" ng-model="user.role">
             <option value="volunteer">Volunteer</option>
-            <option value="ngo">NGO / Organization Representative</option>
+            <option value="NGO">NGO / Organization Representative</option>
           </select>
         </div>
         <div class="form-group">
           <label for="fullname">Full Name / Org Name</label>
-          <input type="text" id="fullname" required>
+          <input type="text" id="fullname" ng-model="user.fullname" required>
         </div>
-        
-        <div class="form-group" id="ngoRegField" style="display: none;">
+
+        <!-- ng-show replaces the old handleRoleChange() DOM toggling -->
+        <div class="form-group" id="ngoRegField" ng-show="isNgo()">
           <label for="registrationNo">NGO Registration Number</label>
-          <input type="text" id="registrationNo" placeholder="REG-123456">
+          <input type="text" id="registrationNo" ng-model="user.registrationNo" placeholder="REG-123456">
         </div>
 
         <div class="form-group">
           <label for="reg-email">Email Address</label>
-          <input type="email" id="reg-email" required>
+          <input type="email" id="reg-email" ng-model="user.email" required>
         </div>
         <div class="form-group">
           <label for="city">City / Region</label>
-          <input list="cities" id="city" placeholder="Type or select a city">
+          <input list="cities" id="city" ng-model="user.city" placeholder="Type or select a city">
           <datalist id="cities">
-            <option value="California, USA">
-            <option value="London, UK">
-            <option value="Tokyo, Japan">
+            <option value="Kolkata, India">
+            <option value="Mumbai, India">
+            <option value="Madurai, India">
+            <option value="Chennai, India">
           </datalist>
         </div>
         <div class="form-group">
           <label for="reg-pass">Password</label>
-          <input type="password" id="reg-pass" required>
+          <input type="password" id="reg-pass" ng-model="user.password" required>
         </div>
+
+        <!-- Live preview: proves the two-way binding is working as you type -->
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem;" ng-if="user.fullname">
+           <strong>{{ user.fullname | capitalize }}</strong> will register as
+          <strong>{{ user.role }}</strong><span ng-if="user.city"> from {{ user.city }}</span>.
+        </p>
+
         <button type="submit" class="btn" style="width: 100%;">Create Account</button>
       </form>
     </section>
   </main>
+
   <footer>
-    <p>&copy; 2026 Disaster Volunteering Network</p>
+    <p>&copy; {{ year }} {{ appName }}</p>
   </footer>
 </body>
 </html>
