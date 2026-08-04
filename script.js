@@ -288,7 +288,7 @@ app.controller("ProfileController", function ($scope, organizationName, Voluntee
 
 });
 
-/ ==========================================
+//==========================================
 // Admin Dashboard Functions
 // ==========================================
 function filterLogs() {
