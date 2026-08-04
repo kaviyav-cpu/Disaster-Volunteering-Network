@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dvnApp">
 <head>
   <meta charset="UTF-8">
   <title>Volunteer Dashboard - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
-<body>
+<body ng-controller="VolunteerDashboardController">
   <header>
     <div class="header-brand">
-      <img src=images/logo.png alt="Logo" class="header-logo">
+      <img src="C:\Users\LENOVO\Documents\SEM4\web\Disaster-Volunteering-Network-main\images\logo.png" alt="Logo" class="header-logo">
       <h1>Disaster Volunteering Network</h1>
     </div>
     <nav>
@@ -22,35 +24,40 @@
   <main style="display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem;">
     <section>
       <div class="card">
-        <h2>Welcome Back, Jane!</h2>
-        <p>Current Time: <strong id="liveClock">--:--:--</strong></p>
-        
+        <h2>Welcome Back, {{ volunteerName }}!</h2>
+        <!-- {{ }} interpolation driven by $interval in the controller -->
+        <p>Current Time: <strong>{{ liveClock }}</strong></p>
+
         <!-- Emergency Alert Audio -->
         <div class="audio-box" style="margin-top: 10px;">
           <p><strong>🚨 Emergency Broadcast:</strong> Listen to local siren audio dispatch.</p>
           <audio controls id="sirenAudio">
-            <source src=audio/alert.mp3.mp3 type="audio/mpeg">
+            <source src="audio/alert.mp3" type="audio/mpeg">
           </audio>
         </div>
       </div>
-       <!-- Disaster Awareness Video -->
-<div class="card" style="margin-top:20px;">
-  <h3>🎥 Disaster Safety Training</h3>
-  <p>Watch the disaster preparedness video before attending your assigned task.</p>
 
-  <video width="100%" controls poster="images/video-thumbnail.jpg">
-    <source src="C:\Users\mithr\Documents\Disaster_Volunteering\Awareness.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+      <!-- Disaster Awareness Video -->
+      <div class="card" style="margin-top:20px;">
+        <h3>🎥 Disaster Safety Training</h3>
+        <p>Watch the disaster preparedness video before attending your assigned task.</p>
+
+        <video width="100%" controls poster="images/video-thumbnail.jpg">
+          <source src="video/awareness.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
       <article class="card">
         <h3>My Impact Goals</h3>
         <p>Monthly Volunteering Hours Progress:</p>
-        <progress id="hourProgress" value="18" max="25"></progress> 
-        <span id="progressText">18 / 25 Hours</span>
-        
+        <!-- Attribute interpolation ({{ }} inside an attribute) drives the native progress bar -->
+        <progress value="{{ hourProgress }}" max="{{ hourGoal }}"></progress>
+        <span>{{ hourProgress }} / {{ hourGoal }} Hours</span>
+
         <p style="margin-top: 10px;">Reliability Metric Score:</p>
-        <meter value="0.95" min="0" max="1.0">95%</meter> 95% High Reliability
+        <meter value="{{ reliability }}" min="0" max="1.0">{{ reliability * 100 }}%</meter>
+        {{ reliability * 100 }}% High Reliability
       </article>
 
       <section class="card">
@@ -65,12 +72,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Flood Relief Food Distribution</td>
-              <td><time datetime="2026-08-15T09:00">Aug 15, 2026 - 09:00 AM</time></td>
-              <td><span class="badge" id="taskStatus">Confirmed</span></td>
+            <!-- ng-repeat renders one row per task object from TaskService -->
+            <tr ng-repeat="task in tasks">
+              <td>{{ task.title }}</td>
+              <td><time>{{ task.dateLabel }}</time></td>
+              <td><span class="badge">{{ task.status }}</span></td>
               <td>
-                <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="checkInTask()">Check In</button>
+                <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" ng-click="checkInTask(task)">Check In</button>
               </td>
             </tr>
           </tbody>
@@ -81,37 +89,13 @@
     <aside>
       <div class="card">
         <h3>Quick Tools</h3>
-        <button class="btn" onclick="triggerAlert()" style="background:#ef4444; width:100%;">🚨 Sound SOS Signal</button>
+        <button class="btn" ng-click="triggerAlert()" style="background:#ef4444; width:100%;">🚨 Sound SOS Signal</button>
       </div>
     </aside>
   </main>
 
   <footer>
-    <p>&copy; 2026 Disaster Volunteering Network</p>
+    <p>&copy; {{ year }} {{ appName }}</p>
   </footer>
-
-  <script>
-    // Live Clock JS
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('liveClock').innerText = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Check In Functionality
-    function checkInTask() {
-      document.getElementById('taskStatus').innerText = 'Checked In';
-      document.getElementById('taskStatus').style.background = '#dcfce7';
-      alert('Checked into Flood Relief Food Distribution successfully!');
-    }
-
-    // Play Audio via JS
-    function triggerAlert() {
-      const audio = document.getElementById('sirenAudio');
-      audio.play();
-      alert('SOS Broadcasted to local crisis coordinator!');
-    }
-  </script>
 </body>
 </html>
