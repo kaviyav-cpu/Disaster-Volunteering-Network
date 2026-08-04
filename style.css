@@ -167,26 +167,24 @@ main {
 }
 
 /* JS Toast Notification */
-#toast {
-  visibility: hidden;
-  min-width: 250px;
-  background-color: #1e293b;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 12px;
-  position: fixed;
-  z-index: 1000;
-  right: 30px;
-  bottom: 30px;
-  font-size: 14px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+#toast{
+    visibility:hidden;
+    min-width:250px;
+    background:#16a34a;
+    color:white;
+    text-align:center;
+    border-radius:5px;
+    padding:15px;
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%);
 }
 
-#toast.show {
-  visibility: visible;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+#toast.show{
+    visibility:visible;
 }
+
 
 @keyframes fadein {
   from { bottom: 0; opacity: 0; }
