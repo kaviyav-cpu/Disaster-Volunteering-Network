@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dvnApp">
 <head>
   <meta charset="UTF-8">
   <title>Home - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
-<body>
+<body ng-controller="HomeController">
   <header>
     <div class="header-brand">
-      <img src=images/logo.png alt="Logo" class="header-logo">
-      <h1>Disaster Volunteering Network</h1>
+      <img src="C:\Users\LENOVO\Documents\SEM4\web\Disaster-Volunteering-Network-main\images\logo.png" alt="Logo" class="header-logo">
+      <h1>{{ appName }}</h1>
     </div>
     <div class="top-right-nav">
       <a href="login.html" class="login-btn">Login</a>
@@ -21,7 +22,7 @@
     <aside class="sidebar">
       <h3>Navigation Menu</h3>
       <ul class="sidebar-nav">
-        <li><a href="index.html" class="active"> Home & Join</a></li>
+        <li><a href="home.html" class="active"> Home & Join</a></li>
         <li><a href="register.html"> Register Page</a></li>
         <li><a href="volunteer-dashboard.html"> Volunteer Dashboard</a></li>
         <li><a href="ngo-dashboard.html"> NGO Dashboard</a></li>
@@ -45,18 +46,20 @@
 
       <section class="card">
         <h3>🎙️ Live Emergency Dispatch Audio Broadcast</h3>
+        <!-- {{ }} interpolation: text pulled from TaskService via the controller -->
         <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
-          Listen to the latest audio warning and crisis updates broadcasted across network hubs.
+          {{ broadcastMessage }}
         </p>
-        
+
         <div class="audio-box">
           <audio id="homeAudio" controls style="width: 100%;">
-            <source src=audio/alert.mp3.mp3 type="audio/mpeg">
+            <source src="audio/alert.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
           </audio>
           <div style="margin-top: 8px; display: flex; gap: 8px;">
-            <button onclick="playAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem;">▶ Play Sound</button>
-            <button onclick="pauseAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem; background: #64748b;">⏸ Pause</button>
+            <!-- ng-click replaces the old inline onclick handlers -->
+            <button ng-click="playAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem;">▶ Play Sound</button>
+            <button ng-click="pauseAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem; background: #64748b;">⏸ Pause</button>
           </div>
         </div>
       </section>
@@ -78,7 +81,7 @@
   </div>
 
   <footer>
-    <p>&copy; 2026 Disaster Volunteering Network</p>
+    <p>&copy; {{ year }} {{ appName }}</p>
   </footer>
 </body>
 </html>
