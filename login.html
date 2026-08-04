@@ -1,109 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Login - Disaster Volunteering Network</title>
+    <meta charset="UTF-8">
+    <title>Login - Disaster Volunteering Network</title>
 
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-  <!-- AngularJS Library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
- 
-  <script src="script.js" defer></script>
-
+    <!-- Your JavaScript -->
+    <script src="script.js"></script>
 </head>
 
-<body ng-app="myApp" ng-controller="LoginController">
+<body ng-controller="LoginController">
 
-  <header>
+<header>
     <div class="header-brand">
-      <img src=images/logo.png alt="Logo" class="header-logo">
-      <h1>Disaster Volunteering Network</h1>
+        <img src="images/logo.png" class="header-logo" alt="Logo">
+        <h1>Disaster Volunteering Network</h1>
     </div>
-  </header>
+</header>
 
-  <main class="auth-container">
-    <section class="card">
+<main class="auth-container">
 
-      <h2>Welcome Back</h2>
+<section class="card">
 
-      <p style="margin-bottom: 1rem; color: #666;">
-        Sign in to access your dashboard
-      </p>
+<h2>Welcome Back</h2>
 
-      <!-- Login Form -->
-      <form id="loginForm" ng-submit="login(); handleLoginSubmit($event)">
+<p>Sign in to access your dashboard</p>
 
-        <div class="form-group">
-          <label for="email">Email Address</label>
+<form ng-submit="login()">
 
-          <input
+    <div class="form-group">
+
+        <label>Email Address</label>
+
+        <input
             type="email"
-            id="email"
             ng-model="email"
-            required
-            placeholder="name@example.com">
-        </div>
+            placeholder="name@example.com"
+            required>
 
-        <div class="form-group">
+    </div>
 
-          <label for="password">Password</label>
+    <div class="form-group">
 
-          <input
+        <label>Password</label>
+
+        <input
             type="password"
             id="password"
             ng-model="password"
-            required
-            placeholder="••••••••">
+            placeholder="••••••••"
+            required>
 
-          <label style="font-weight: normal; font-size: 0.85rem; margin-top: 5px;">
+        <label>
+
             <input
-              type="checkbox"
-              id="togglePass"
-              onchange="togglePasswordVisibility(this)">
+                type="checkbox"
+                onchange="togglePasswordVisibility(this)">
+
             Show Password
-          </label>
 
-        </div>
+        </label>
 
-        <!-- Interpolation + Two Way Binding -->
-        <p style="color:#666; font-size:14px;">
-          Welcome {{email}}
-        </p>
+    </div>
 
-        <!-- Message from Controller -->
-        <p style="color:green;">
-          {{message}}
-        </p>
+    <p>Welcome {{email}}</p>
 
-        <button
-          type="submit"
-          class="btn"
-          style="width:100%;"
-          ng-disabled="!email || !password">
+    <p style="color:green;">
+        {{message}}
+    </p>
 
-          Sign In
+    <button
+        type="submit"
+        class="btn"
+        ng-disabled="!email || !password">
 
-        </button>
+        Sign In
 
-      </form>
+    </button>
 
-      <p style="margin-top: 1rem; text-align: center;">
-        Don't have an account?
-        <a href="register.html">Register here</a>
-      </p>
+</form>
 
-    </section>
-  </main>
+<p style="text-align:center; margin-top:15px;">
+    Don't have an account?
+    <a href="register.html">Register here</a>
+</p>
 
-  <div id="toast">
+</section>
+
+</main>
+
+<div id="toast">
     Login successful! Redirecting...
-  </div>
-
-  <footer>
-    <p>&copy; 2026 Disaster Volunteering Network</p>
-  </footer>
+</div>
 
 </body>
 </html>
