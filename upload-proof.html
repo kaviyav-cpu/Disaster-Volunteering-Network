@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="dvnApp">
 <head>
   <meta charset="UTF-8">
   <title>Upload Completion Proof - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
-<body>
+<body ng-controller="UploadProofController">
   <header>
     <div class="header-brand">
-      <img src=images/logo.png alt="Logo" class="header-logo">
+      <img src="C:\Users\LENOVO\Documents\SEM4\web\Disaster-Volunteering-Network-main\images\logo.png" alt="Logo" class="header-logo">
       <h1>Upload Verification Proof</h1>
     </div>
     <nav>
@@ -20,19 +21,23 @@
   <main class="auth-container">
     <section class="card">
       <h2>Submit Deployment Record</h2>
-      <form id="uploadForm" onsubmit="handleUploadSubmit(event)">
+      <form id="uploadForm" ng-submit="submitProof()">
         <div class="form-group">
           <label for="hours">Hours Spent on Site: </label>
-          <input type="range" id="hours" min="1" max="12" value="4" oninput="updateOutput(this.value)">
-          <p>Claiming: <output id="hourOutput">4</output> hours</p>
+          <!-- ng-model two-way binds the slider directly to $scope.hours,
+               no oninput/updateOutput() handler needed anymore -->
+          <input type="range" id="hours" ng-model="hours" min="{{ minHours }}" max="{{ maxHours }}">
+          <!-- {{ }} interpolation + custom `hoursLabel` filter -->
+          <p>Claiming: <output>{{ hours | hoursLabel }}</output></p>
         </div>
 
         <div class="form-group">
           <label for="proof-file">Upload Image/Report Proof</label>
-          <input type="file" id="proof-file" accept="image/*" required onchange="previewImage(event)">
+          <input type="file" id="proof-file" accept="image/*" required onchange="angular.element(this).scope().previewImage(event)">
         </div>
 
-        <img id="imgPreview" style="max-width:100%; display:none; margin-bottom:10px; border-radius:4px;">
+        <!-- ng-src + ng-show instead of manually toggling display/src in JS -->
+        <img ng-src="{{ imagePreview }}" ng-show="imagePreview" style="max-width:100%; margin-bottom:10px; border-radius:4px;">
 
         <button type="submit" class="btn" style="width: 100%;">Submit Proof</button>
       </form>
@@ -40,7 +45,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2026 Disaster Volunteering Network</p>
+    <p>&copy; {{ year }} {{ appName }}</p>
   </footer>
 </body>
 </html>
