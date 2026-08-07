@@ -1,102 +1,132 @@
+None selected 
+
+Skip to content
+Using Thiagarajar College of Engineering Mail with screen readers
+
+1 of 646
+web
+Inbox
+
+MITHRA D <mithra@student.tce.edu>
+Attachments
+11:29 AM (0 minutes ago)
+to me
+
+
+ 3 Attachments
+  •  Scanned by Gmail
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - Disaster Volunteering Network</title>
+  <meta charset="UTF-8">
+  <title>Login - Disaster Volunteering Network</title>
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 
-    <!-- AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <!-- AngularJS Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-    <!-- Your JavaScript -->
-    <script src="script.js"></script>
+ 
+  <script src="script.js" defer></script>
+
 </head>
 
-<body ng-controller="LoginController">
+<body ng-app="myApp" ng-controller="LoginController">
 
-<header>
+  <header>
     <div class="header-brand">
-        <img src="images/logo.png" class="header-logo" alt="Logo">
-        <h1>Disaster Volunteering Network</h1>
+      <img src="C:\Users\mithr\Documents\Disaster_Volunteering\logo\logo.png" alt="Logo" class="header-logo">
+      <h1>Disaster Volunteering Network</h1>
     </div>
-</header>
+  </header>
 
-<main class="auth-container">
+  <main class="auth-container">
+    <section>
 
-<section class="card">
+  <h2>Welcome Back</h2>
 
-<h2>Welcome Back</h2>
+  <p style="margin-bottom: 1rem; color: #666;">
+    Sign in to access your dashboard
+  </p>
 
-<p>Sign in to access your dashboard</p>
+  <!-- Login Form -->
+  <form id="loginForm" ng-submit="login()">
 
-<form ng-submit="login()">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+
+      <input
+        type="email"
+        id="email"
+        ng-model="email"
+        required
+        placeholder="name@example.com">
+
+    </div>
 
     <div class="form-group">
 
-        <label>Email Address</label>
+      <label for="password">Password</label>
+
+      <input
+        type="password"
+        id="password"
+        ng-model="password"
+        required
+        placeholder="••••••••">
+
+      <label style="font-weight: normal; font-size: 0.85rem; margin-top: 5px;">
 
         <input
-            type="email"
-            ng-model="email"
-            placeholder="name@example.com"
-            required>
+          type="checkbox"
+          id="togglePass"
+          onchange="togglePasswordVisibility(this)">
+
+        Show Password
+
+      </label>
 
     </div>
 
-    <div class="form-group">
+    <!-- Interpolation + Two Way Binding -->
+    <p style="color:#666; font-size:14px;">
+      Welcome {{email}}
+    </p>
 
-        <label>Password</label>
-
-        <input
-            type="password"
-            id="password"
-            ng-model="password"
-            placeholder="••••••••"
-            required>
-
-        <label>
-
-            <input
-                type="checkbox"
-                onchange="togglePasswordVisibility(this)">
-
-            Show Password
-
-        </label>
-
-    </div>
-
-    <p>Welcome {{email}}</p>
-
+    <!-- Message from Controller -->
     <p style="color:green;">
-        {{message}}
+      {{message}}
     </p>
 
     <button
-        type="submit"
-        class="btn"
-        ng-disabled="!email || !password">
+      type="submit"
+      class="btn"
+      style="width:100%;"
+      ng-disabled="!email || !password">
 
-        Sign In
+      Sign In
 
     </button>
 
-</form>
+  </form>
 
-<p style="text-align:center; margin-top:15px;">
+  <p style="margin-top: 1rem; text-align: center;">
     Don't have an account?
     <a href="register.html">Register here</a>
-</p>
+  </p>
 
 </section>
+  </main>
 
-</main>
-
-<div id="toast">
+  <div id="toast">
     Login successful! Redirecting...
-</div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
+  </footer>
 
 </body>
 </html>
+login.html
+Displaying login.html.
