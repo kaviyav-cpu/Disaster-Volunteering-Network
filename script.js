@@ -217,34 +217,38 @@ app.directive("taskStatus", function() {
     return {
         restrict: "A",
 
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
 
-            function updateStatus() {
+            scope.$watch("task.status", function(status) {
 
-                if (scope.task.status === "Accepted") {
+                if (status === "Accepted") {
 
-                    element.css({
-                        "background-color": "#d4edda",
-                        "color": "#155724",
-                        "padding": "5px 10px",
-                        "border-radius": "5px"
-                    });
+                    element[0].style.setProperty(
+                        "background-color", "#d4edda", "important"
+                    );
+
+                    element[0].style.setProperty(
+                        "color", "#155724", "important"
+                    );
 
                 } else {
 
-                    element.css({
-                        "background-color": "#fff3cd",
-                        "color": "#856404",
-                        "padding": "5px 10px",
-                        "border-radius": "5px"
-                    });
+                    element[0].style.setProperty(
+                        "background-color", "#fff3cd", "important"
+                    );
+
+                    element[0].style.setProperty(
+                        "color", "#856404", "important"
+                    );
                 }
-            }
 
-            updateStatus();
+                element[0].style.setProperty(
+                    "padding", "5px 10px", "important"
+                );
 
-            scope.$watch("task.status", function() {
-                updateStatus();
+                element[0].style.setProperty(
+                    "border-radius", "5px", "important"
+                );
             });
         }
     };
