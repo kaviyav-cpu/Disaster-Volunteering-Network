@@ -1,0 +1,22 @@
+<div class="page">
+  <h2 class="page-title">Verify Proof</h2>
+
+  <div class="panel proof-card" ng-repeat="s in vm.submissions">
+    <h3>{{ ::s.volunteerName }} &middot; {{ vm.taskTitle(s.taskId) }}</h3>
+    <p class="muted">Submitted {{ ::s.submittedDate }}</p>
+    <p>{{ s.description }}</p>
+
+    <span class="pill" ng-class="{'pill-approved': s.status==='Verified', 'pill-pending': s.status==='Pending', 'pill-closed': s.status==='Rejected'}">{{ s.status }}</span>
+
+    <div ng-if="s.status === 'Pending'" class="verify-controls">
+      <label>Remarks
+        <textarea ng-model="vm.remarksDraft[s.id]" rows="2" placeholder="Optional remarks..."></textarea>
+      </label>
+      <div class="admin-actions">
+        <button class="btn-approve" ng-click="vm.verify(s)">Verify</button>
+        <button class="btn-reject" ng-click="vm.reject(s)">Reject</button>
+      </div>
+    </div>
+    <p class="muted" ng-if="s.status !== 'Pending' && s.remarks">Remarks: {{ s.remarks }}</p>
+  </div>
+</div>

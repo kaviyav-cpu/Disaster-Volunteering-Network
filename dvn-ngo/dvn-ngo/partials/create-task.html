@@ -1,0 +1,42 @@
+<div class="page">
+  <h2 class="page-title">Create Task</h2>
+
+  <form class="panel form-panel" name="taskForm" novalidate ng-submit="vm.createTask(taskForm)">
+
+    <label>Task Title
+      <input type="text" name="title" ng-model="vm.newTask.title" required>
+      <span class="field-error" ng-show="vm.submitted && taskForm.title.$invalid">Title is required.</span>
+    </label>
+
+    <label>Description
+      <textarea name="description" ng-model="vm.newTask.description" rows="3" required></textarea>
+      <span class="field-error" ng-show="vm.submitted && taskForm.description.$invalid">Description is required.</span>
+    </label>
+
+    <label>Skills Required <span class="muted">(comma separated)</span>
+      <input type="text" ng-model="vm.newTask.skillsRequired" placeholder="e.g. First Aid, Logistics">
+    </label>
+
+    <div class="form-row">
+      <label>Location
+        <input type="text" name="location" ng-model="vm.newTask.location" required>
+      </label>
+      <label>Capacity
+        <input type="number" name="capacity" ng-model="vm.newTask.capacity" min="1" required>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>Date
+        <input type="text" ng-model="vm.newTask.date" placeholder="DD-MM-YYYY">
+      </label>
+      <label>Time
+        <input type="text" ng-model="vm.newTask.time" placeholder="e.g. 10:00 AM - 2:00 PM">
+      </label>
+    </div>
+
+    <div class="admin-actions">
+      <button type="submit" class="btn-approve">Save as Draft</button>
+    </div>
+  </form>
+</div>

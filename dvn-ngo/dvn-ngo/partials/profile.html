@@ -1,0 +1,45 @@
+<div class="page">
+  <h2 class="page-title">NGO Profile</h2>
+
+  <div class="panel form-panel">
+    <p class="save-msg" ng-if="vm.savedMessage">{{ vm.savedMessage }}</p>
+
+    <div ng-if="!vm.editing">
+      <p><strong>{{ vm.saved.orgName }}</strong></p>
+      <p class="muted">Reg. No: {{ vm.saved.registrationNumber }}</p>
+      <p>{{ vm.saved.email }} &middot; {{ vm.saved.phone }}</p>
+      <p>{{ vm.saved.address }}</p>
+      <p>{{ vm.saved.description }}</p>
+      <div class="admin-actions">
+        <button class="btn-approve" ng-click="vm.edit()">Edit Profile</button>
+      </div>
+    </div>
+
+    <form ng-if="vm.editing" ng-submit="vm.save()">
+      <label>Organisation Name
+        <input type="text" ng-model="vm.form.orgName">
+      </label>
+      <label>Registration Number
+        <input type="text" ng-model="vm.form.registrationNumber">
+      </label>
+      <div class="form-row">
+        <label>Email
+          <input type="email" ng-model="vm.form.email">
+        </label>
+        <label>Phone
+          <input type="text" ng-model="vm.form.phone">
+        </label>
+      </div>
+      <label>Address
+        <input type="text" ng-model="vm.form.address">
+      </label>
+      <label>Description
+        <textarea ng-model="vm.form.description" rows="3"></textarea>
+      </label>
+      <div class="admin-actions">
+        <button type="submit" class="btn-approve">Save</button>
+        <button type="button" class="btn-reject" ng-click="vm.cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

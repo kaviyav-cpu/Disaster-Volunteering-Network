@@ -1,0 +1,24 @@
+<div class="page">
+  <h2 class="page-title">Volunteer Requests</h2>
+
+  <div class="panel">
+    <table class="app-table">
+      <thead>
+        <tr><th>Volunteer</th><th>Task</th><th>Skill</th><th>Applied</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="r in vm.requests">
+          <td ng-bind="r.volunteerName"></td>
+          <td>{{ vm.taskTitle(r.taskId) }}</td>
+          <td ng-bind="r.skill"></td>
+          <td>{{ r.appliedDate }}</td>
+          <td><span class="pill" ng-class="{'pill-approved': r.status==='Approved', 'pill-pending': r.status==='Pending', 'pill-closed': r.status==='Rejected'}">{{ r.status }}</span></td>
+          <td>
+            <button class="btn-apply btn-sm" ng-if="r.status==='Pending'" ng-click="vm.approve(r)">Approve</button>
+            <button class="btn-reject btn-sm" ng-if="r.status==='Pending'" ng-click="vm.reject(r)">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

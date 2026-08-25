@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dvnNgoStandalone">
+<head>
+  <meta charset="UTF-8">
+  <title>Disaster Volunteering Network - NGO</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body ng-controller="ShellController">
+
+  <div class="app-shell">
+    <div ng-include="'partials/sidebar.html'"></div>
+
+    <div class="main-area">
+      <div ng-include="'partials/header.html'" ng-controller="HeaderController as head"></div>
+      <div ng-view></div>
+    </div>
+  </div>
+
+  <!-- AngularJS 1.8.2 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+  <script src="js/app.module.js"></script>
+  <script src="js/app.routes.js"></script>
+  <script src="js/services/task.service.js"></script>
+  <script src="js/services/profile.service.js"></script>
+  <script src="js/factories/volunteerRequest.factory.js"></script>
+  <script src="js/factories/proof.factory.js"></script>
+  <script src="js/factories/notification.factory.js"></script>
+  <script src="js/controllers/shell.controller.js"></script>
+  <script src="js/controllers/header.controller.js"></script>
+  <script src="js/controllers/dashboard.controller.js"></script>
+  <script src="js/controllers/createTask.controller.js"></script>
+  <script src="js/controllers/manageTasks.controller.js"></script>
+  <script src="js/controllers/volunteerRequests.controller.js"></script>
+  <script src="js/controllers/verifyProof.controller.js"></script>
+  <script src="js/controllers/volunteerList.controller.js"></script>
+  <script src="js/controllers/reports.controller.js"></script>
+  <script src="js/controllers/profile.controller.js"></script>
+</body>
+</html>
