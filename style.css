@@ -5,15 +5,34 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ==========================================================================
+   BODY
+   ========================================================================== */
+
 body {
   background-color: #f4f7f6;
   color: #333;
   line-height: 1.6;
+
+  /* Page animation */
+  animation: pageFadeIn 0.6s ease-in-out;
 }
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 
 /* ==========================================================================
    HEADER & NAVIGATION
    ========================================================================== */
+
 header {
   background-color: #0d9488;
   color: white;
@@ -27,8 +46,25 @@ header {
   width: 100%;
   height: 60px;
   z-index: 100;
+
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  /* Header animation */
+  animation: headerSlideDown 0.6s ease-out;
 }
+
+@keyframes headerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 .header-brand {
   display: flex;
@@ -36,23 +72,48 @@ header {
   gap: 0.75rem;
 }
 
+
+/* Logo animation */
+
 .header-logo {
   height: 38px;
   width: auto;
   border-radius: 4px;
+
+  animation: logoAppear 0.8s ease;
 }
 
-/* Header Links & Top-Right Login */
+@keyframes logoAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+
+/* Header Links */
+
 nav a {
   color: white;
   text-decoration: none;
   margin-left: 1.5rem;
   font-weight: 500;
+
+  transition: all 0.2s ease;
 }
 
 nav a:hover {
   text-decoration: underline;
+  transform: translateY(-2px);
 }
+
+
+/* Logout button */
 
 .top-right-nav .login-btn {
   background-color: #ffffff;
@@ -61,21 +122,27 @@ nav a:hover {
   border-radius: 4px;
   font-weight: bold;
   text-decoration: none;
-  transition: background-color 0.2s;
+
+  transition: all 0.25s ease;
 }
 
 .top-right-nav .login-btn:hover {
   background-color: #f0fdf4;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
 }
+
 
 /* ==========================================================================
    SIDEBAR & LAYOUT STRUCTURE
    ========================================================================== */
+
 .app-container {
   display: flex;
-  margin-top: 60px; /* Offset for fixed header */
+  margin-top: 60px;
   min-height: calc(100vh - 60px);
 }
+
 
 .sidebar {
   width: 250px;
@@ -87,7 +154,23 @@ nav a:hover {
   bottom: 0;
   left: 0;
   overflow-y: auto;
+
+  /* Sidebar animation */
+  animation: sidebarSlide 0.7s ease-out;
 }
+
+@keyframes sidebarSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-250px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 
 .sidebar h3 {
   font-size: 0.8rem;
@@ -97,13 +180,50 @@ nav a:hover {
   letter-spacing: 1px;
 }
 
+
 .sidebar-nav {
   list-style: none;
 }
 
+
 .sidebar-nav li {
   margin-bottom: 0.5rem;
+
+  /* Menu animation */
+  animation: menuAppear 0.5s ease forwards;
+  opacity: 0;
 }
+
+
+.sidebar-nav li:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.sidebar-nav li:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.sidebar-nav li:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.sidebar-nav li:nth-child(4) {
+  animation-delay: 0.65s;
+}
+
+
+@keyframes menuAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 
 .sidebar-nav a {
   color: #cbd5e1;
@@ -112,30 +232,55 @@ nav a:hover {
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
   font-size: 0.95rem;
+
   transition: all 0.2s ease;
 }
+
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
   background-color: #0d9488;
   color: white;
   font-weight: 500;
+
+  transform: translateX(5px);
 }
+
 
 /* ==========================================================================
    MAIN CONTENT & CARDS
    ========================================================================== */
+
 main {
   max-width: 1100px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
+
 .main-content {
-  margin-left: 250px; /* Offset for sidebar width */
+  margin-left: 250px;
   padding: 2rem;
   flex: 1;
+
+  /* Main content animation */
+  animation: contentAppear 0.7s ease-out;
 }
+
+@keyframes contentAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Cards */
 
 .card {
   background: white;
@@ -143,71 +288,155 @@ main {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 1.5rem;
+
+  /* Card entrance animation */
+  animation: cardSlideUp 0.7s ease forwards;
+  opacity: 0;
+
+  /* Hover animation */
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
+
+.card:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+.card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.card:nth-child(3) {
+  animation-delay: 0.45s;
+}
+
+.card:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.card:nth-child(5) {
+  animation-delay: 0.75s;
+}
+
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
 
 .auth-container {
   max-width: 450px;
   margin: 4rem auto;
+
+  animation: cardSlideUp 0.7s ease;
 }
+
 
 /* ==========================================================================
    AUDIO PLAYER & UI UTILITIES
    ========================================================================== */
+
 .audio-box {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
   padding: 1rem;
   border-radius: 6px;
   margin: 1rem 0;
+
+  animation: cardSlideUp 0.6s ease;
 }
+
 
 .audio-box h4 {
   color: #166534;
   margin-bottom: 0.5rem;
 }
 
-/* JS Toast Notification */
-#toast{
-    visibility:hidden;
-    min-width:250px;
-    background:#16a34a;
-    color:white;
-    text-align:center;
-    border-radius:5px;
-    padding:15px;
-    position:fixed;
-    left:50%;
-    bottom:30px;
-    transform:translateX(-50%);
+
+/* ==========================================================================
+   TOAST NOTIFICATION
+   ========================================================================== */
+
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background: #16a34a;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 15px;
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
-#toast.show{
-    visibility:visible;
+
+#toast.show {
+  visibility: visible;
+
+  animation:
+    fadein 0.5s,
+    fadeout 0.5s 2.5s;
 }
 
 
 @keyframes fadein {
-  from { bottom: 0; opacity: 0; }
-  to { bottom: 30px; opacity: 1; }
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
+
 @keyframes fadeout {
-  from { bottom: 30px; opacity: 1; }
-  to { bottom: 0; opacity: 0; }
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
+
 
 /* ==========================================================================
    FORMS & BUTTONS
    ========================================================================== */
+
 .form-group {
   margin-bottom: 1rem;
 }
+
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
+
 
 .form-group input,
 .form-group select,
@@ -216,7 +445,27 @@ main {
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
+
+
+/* Input focus animation */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+
+/* Buttons */
 
 .btn {
   background-color: #0d9488;
@@ -228,13 +477,30 @@ main {
   font-weight: bold;
   text-decoration: none;
   display: inline-block;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
+
 
 .btn:hover {
   background-color: #0f766e;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Badges */
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+
 .badge {
   background-color: #ccfbf1;
   color: #0f766e;
@@ -242,98 +508,142 @@ main {
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: bold;
+
+  display: inline-block;
+
+  /* Badge animation */
+  animation: badgePop 0.5s ease;
 }
+
+
+@keyframes badgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
 .badge-danger {
   background-color: #fee2e2;
   color: #991b1b;
 }
 
-/* Data Tables */
+
+/* ==========================================================================
+   DATA TABLES
+   ========================================================================== */
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-th, td {
+
+th,
+td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e2e8f0;
 }
 
-/* Footer */
-footer {
-    width: 100%;
-    background: #1f2937;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
+
+/* Table row animation */
+
+table tr {
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
-/* Cards animation */
-.card {
-    animation: fadeSlideUp 0.7s ease forwards;
+
+
+table tr:hover {
+  background-color: #f0fdfa;
+  transform: translateX(4px);
+}
+
+
+/* ==========================================================================
+   NOTIFICATION
+   ========================================================================== */
+
+.notification {
+  animation: notificationSlide 0.5s ease;
+}
+
+
+@keyframes notificationSlide {
+  from {
     opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* Different delay for each card */
-.card:nth-child(1) {
-    animation-delay: 0.1s;
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+footer {
+  width: 100%;
+  background: #1f2937;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+
+  animation: footerAppear 0.8s ease;
 }
 
-.card:nth-child(2) {
-    animation-delay: 0.3s;
+
+@keyframes footerAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.card:nth-child(3) {
-    animation-delay: 0.5s;
+
+/* ==========================================================================
+   SMOOTH PAGE TRANSITION
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
 }
 
-.card:nth-child(4) {
-    animation-delay: 0.7s;
-}
 
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
+/* ==========================================================================
+   REDUCED MOTION ACCESSIBILITY
+   ========================================================================== */
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Button animation */
-.btn {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Badge animation */
-.badge {
-    display: inline-block;
-    animation: badgePop 0.5s ease;
-}
-
-@keyframes badgePop {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-
-    70% {
-        transform: scale(1.15);
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
