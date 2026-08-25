@@ -610,9 +610,7 @@ footer {
 
   animation: footerAppear 0.8s ease;
 }
-body {
-    background-color: yellow !important;
-}
+
 
 @keyframes footerAppear {
   from {
