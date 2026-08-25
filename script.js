@@ -474,31 +474,35 @@ app.directive("taskStatus", function() {
     return {
         restrict: "A",
 
-        scope: {
-            status: "@"
-        },
+        link: function(scope, element, attrs) {
 
-        link: function(scope, element) {
+            function updateStatus() {
 
-            if (scope.status === "Accepted") {
+                if (scope.task.status === "Accepted") {
 
-                element.css({
-                    "background-color": "#d4edda",
-                    "color": "#155724",
-                    "padding": "5px 10px",
-                    "border-radius": "5px"
-                });
+                    element.css({
+                        "background-color": "#d4edda",
+                        "color": "#155724",
+                        "padding": "5px 10px",
+                        "border-radius": "5px"
+                    });
 
-            } else {
+                } else {
 
-                element.css({
-                    "background-color": "#fff3cd",
-                    "color": "#856404",
-                    "padding": "5px 10px",
-                    "border-radius": "5px"
-                });
+                    element.css({
+                        "background-color": "#fff3cd",
+                        "color": "#856404",
+                        "padding": "5px 10px",
+                        "border-radius": "5px"
+                    });
+                }
             }
+
+            updateStatus();
+
+            scope.$watch("task.status", function() {
+                updateStatus();
+            });
         }
     };
 });
-
