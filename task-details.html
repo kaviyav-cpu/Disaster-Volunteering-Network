@@ -36,21 +36,28 @@
 <th>Action</th>
 </tr>
 <tr ng-repeat="task in tasks">
+
     <td>{{task.name}}</td>
+
     <td>{{task.location}}</td>
 
     <td>
-    <span class="badge" task-status>
-        {{task.status}}
-    </span>
-</td>
+        <span class="badge" task-status>
+            {{task.status}}
+        </span>
+    </td>
+
     <td>
-        <button class="btn"
-                ng-click="acceptTask(task)"
-                ng-disabled="task.status=='Accepted'">
+        <button
+            class="btn"
+            ng-click="acceptTask(task)"
+            ng-disabled="task.status == 'Accepted'">
+
             {{task.button}}
+
         </button>
     </td>
+
 </tr>
 
 </table>
