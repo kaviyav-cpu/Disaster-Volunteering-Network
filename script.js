@@ -213,7 +213,42 @@ app.controller("TaskController", function($scope){
         $scope.status = "Application Submitted Successfully";
 
     };
+app.directive("taskStatus", function() {
+    return {
+        restrict: "A",
 
+        link: function(scope, element, attrs) {
+
+            function updateStatus() {
+
+                if (scope.task.status === "Accepted") {
+
+                    element.css({
+                        "background-color": "#d4edda",
+                        "color": "#155724",
+                        "padding": "5px 10px",
+                        "border-radius": "5px"
+                    });
+
+                } else {
+
+                    element.css({
+                        "background-color": "#fff3cd",
+                        "color": "#856404",
+                        "padding": "5px 10px",
+                        "border-radius": "5px"
+                    });
+                }
+            }
+
+            updateStatus();
+
+            scope.$watch("task.status", function() {
+                updateStatus();
+            });
+        }
+    };
+});
     //==========================
     // Data for Filters
     //==========================
@@ -430,79 +465,4 @@ window.location.href = "volunteer-dashboard.html";
 
 };
 
-});
-var app = angular.module("myApp", []);
-
-app.controller("TaskController", function($scope) {
-
-    $scope.organizationName = "Disaster Volunteering Network";
-
-    $scope.tasks = [
-        {
-            name: "Food Distribution",
-            location: "Madurai",
-            status: "Pending",
-            button: "Accept"
-        },
-        {
-            name: "Medical Assistance",
-            location: "Chennai",
-            status: "Pending",
-            button: "Accept"
-        },
-        {
-            name: "Rescue Support",
-            location: "Coimbatore",
-            status: "Accepted",
-            button: "Accepted"
-        }
-    ];
-
-    $scope.acceptTask = function(task) {
-        task.status = "Accepted";
-        task.button = "Accepted";
-    };
-
-    $scope.checkNotification = function() {
-        $scope.notification = "No new notifications";
-    };
-});
-
-
-// CUSTOM DIRECTIVE
-app.directive("taskStatus", function() {
-    return {
-        restrict: "A",
-
-        link: function(scope, element, attrs) {
-
-            function updateStatus() {
-
-                if (scope.task.status === "Accepted") {
-
-                    element.css({
-                        "background-color": "#d4edda",
-                        "color": "#155724",
-                        "padding": "5px 10px",
-                        "border-radius": "5px"
-                    });
-
-                } else {
-
-                    element.css({
-                        "background-color": "#fff3cd",
-                        "color": "#856404",
-                        "padding": "5px 10px",
-                        "border-radius": "5px"
-                    });
-                }
-            }
-
-            updateStatus();
-
-            scope.$watch("task.status", function() {
-                updateStatus();
-            });
-        }
-    };
 });
