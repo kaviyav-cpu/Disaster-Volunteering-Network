@@ -221,7 +221,10 @@ app.directive("taskStatus", function() {
 
             scope.$watch("task.status", function(status) {
 
+                // Accepted
                 if (status === "Accepted") {
+
+                    element.text("✔ " + status);
 
                     element[0].style.setProperty(
                         "background-color", "#d4edda", "important"
@@ -231,7 +234,12 @@ app.directive("taskStatus", function() {
                         "color", "#155724", "important"
                     );
 
-                } else {
+                }
+
+                // Pending
+                else if (status === "Pending") {
+
+                    element.text("⚠ " + status);
 
                     element[0].style.setProperty(
                         "background-color", "#fff3cd", "important"
@@ -239,6 +247,21 @@ app.directive("taskStatus", function() {
 
                     element[0].style.setProperty(
                         "color", "#856404", "important"
+                    );
+
+                }
+
+                // Completed
+                else if (status === "Completed") {
+
+                    element.text("✓ " + status);
+
+                    element[0].style.setProperty(
+                        "background-color", "#dbeafe", "important"
+                    );
+
+                    element[0].style.setProperty(
+                        "color", "#1e40af", "important"
                     );
                 }
 
