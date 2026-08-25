@@ -40,13 +40,10 @@
     <td>{{task.location}}</td>
 
     <td>
-        <span class="badge"
-              task-status
-              status="{{task.status}}">
-            {{task.status}}
-        </span>
-    </td>
-
+    <span class="badge" task-status>
+        {{task.status}}
+    </span>
+</td>
     <td>
         <button class="btn"
                 ng-click="acceptTask(task)"
