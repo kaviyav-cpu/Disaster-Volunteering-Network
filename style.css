@@ -1,22 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
-/* ==========================================================================
-   BODY
-   ========================================================================== */
-
-body {
-  background-color: #f4f7f6;
-  color: #333;
-  line-height: 1.6;
-
-  /* Page animation */
-  animation: pageFadeIn 0.6s ease-in-out;
-}
 
 @keyframes pageFadeIn {
   from {
@@ -26,31 +8,6 @@ body {
   to {
     opacity: 1;
   }
-}
-
-
-/* ==========================================================================
-   HEADER & NAVIGATION
-   ========================================================================== */
-
-header {
-  background-color: #0d9488;
-  color: white;
-  padding: 0.8rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  z-index: 100;
-
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-  /* Header animation */
-  animation: headerSlideDown 0.6s ease-out;
 }
 
 @keyframes headerSlideDown {
@@ -65,24 +22,6 @@ header {
   }
 }
 
-
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-
-/* Logo animation */
-
-.header-logo {
-  height: 38px;
-  width: auto;
-  border-radius: 4px;
-
-  animation: logoAppear 0.8s ease;
-}
-
 @keyframes logoAppear {
   from {
     opacity: 0;
@@ -95,70 +34,6 @@ header {
   }
 }
 
-
-/* Header Links */
-
-nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 500;
-
-  transition: all 0.2s ease;
-}
-
-nav a:hover {
-  text-decoration: underline;
-  transform: translateY(-2px);
-}
-
-
-/* Logout button */
-
-.top-right-nav .login-btn {
-  background-color: #ffffff;
-  color: #0d9488;
-  padding: 0.4rem 1.2rem;
-  border-radius: 4px;
-  font-weight: bold;
-  text-decoration: none;
-
-  transition: all 0.25s ease;
-}
-
-.top-right-nav .login-btn:hover {
-  background-color: #f0fdf4;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-}
-
-
-/* ==========================================================================
-   SIDEBAR & LAYOUT STRUCTURE
-   ========================================================================== */
-
-.app-container {
-  display: flex;
-  margin-top: 60px;
-  min-height: calc(100vh - 60px);
-}
-
-
-.sidebar {
-  width: 250px;
-  background-color: #1e293b;
-  color: white;
-  padding: 1.5rem 1rem;
-  position: fixed;
-  top: 60px;
-  bottom: 0;
-  left: 0;
-  overflow-y: auto;
-
-  /* Sidebar animation */
-  animation: sidebarSlide 0.7s ease-out;
-}
-
 @keyframes sidebarSlide {
   from {
     opacity: 0;
@@ -169,29 +44,6 @@ nav a:hover {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-
-.sidebar h3 {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: #94a3b8;
-  margin-bottom: 1rem;
-  letter-spacing: 1px;
-}
-
-
-.sidebar-nav {
-  list-style: none;
-}
-
-
-.sidebar-nav li {
-  margin-bottom: 0.5rem;
-
-  /* Menu animation */
-  animation: menuAppear 0.5s ease forwards;
-  opacity: 0;
 }
 
 
@@ -224,49 +76,6 @@ nav a:hover {
   }
 }
 
-
-.sidebar-nav a {
-  color: #cbd5e1;
-  text-decoration: none;
-  display: block;
-  padding: 0.6rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-
-  transition: all 0.2s ease;
-}
-
-
-.sidebar-nav a:hover,
-.sidebar-nav a.active {
-  background-color: #0d9488;
-  color: white;
-  font-weight: 500;
-
-  transform: translateX(5px);
-}
-
-
-/* ==========================================================================
-   MAIN CONTENT & CARDS
-   ========================================================================== */
-
-main {
-  max-width: 1100px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-
-.main-content {
-  margin-left: 250px;
-  padding: 2rem;
-  flex: 1;
-
-  /* Main content animation */
-  animation: contentAppear 0.7s ease-out;
-}
-
 @keyframes contentAppear {
   from {
     opacity: 0;
@@ -277,24 +86,6 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-
-/* Cards */
-
-.card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1.5rem;
-
-  /* Card entrance animation */
-  animation: cardSlideUp 0.7s ease forwards;
-  opacity: 0;
-
-  /* Hover animation */
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 
@@ -338,121 +129,6 @@ main {
 }
 
 
-.auth-container {
-  max-width: 450px;
-  margin: 4rem auto;
-
-  animation: cardSlideUp 0.7s ease;
-}
-
-
-/* ==========================================================================
-   AUDIO PLAYER & UI UTILITIES
-   ========================================================================== */
-
-.audio-box {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-
-  animation: cardSlideUp 0.6s ease;
-}
-
-
-.audio-box h4 {
-  color: #166534;
-  margin-bottom: 0.5rem;
-}
-
-
-/* ==========================================================================
-   TOAST NOTIFICATION
-   ========================================================================== */
-
-#toast {
-  visibility: hidden;
-  min-width: 250px;
-  background: #16a34a;
-  color: white;
-  text-align: center;
-  border-radius: 5px;
-  padding: 15px;
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  z-index: 1000;
-}
-
-
-#toast.show {
-  visibility: visible;
-
-  animation:
-    fadein 0.5s,
-    fadeout 0.5s 2.5s;
-}
-
-
-@keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-
-@keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-
-  to {
-    bottom: 0;
-    opacity: 0;
-  }
-}
-
-
-/* ==========================================================================
-   FORMS & BUTTONS
-   ========================================================================== */
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
-}
-
-
 /* Input focus animation */
 
 .form-group input:focus,
@@ -465,54 +141,8 @@ main {
 }
 
 
-/* Buttons */
-
-.btn {
-  background-color: #0d9488;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  text-decoration: none;
-  display: inline-block;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-}
-
-
-.btn:hover {
-  background-color: #0f766e;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-}
-
-
 .btn:active {
   transform: scale(0.95);
-}
-
-
-/* ==========================================================================
-   BADGES
-   ========================================================================== */
-
-.badge {
-  background-color: #ccfbf1;
-  color: #0f766e;
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: bold;
-
-  display: inline-block;
-
-  /* Badge animation */
-  animation: badgePop 0.5s ease;
 }
 
 
@@ -531,31 +161,6 @@ main {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-
-.badge-danger {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-
-/* ==========================================================================
-   DATA TABLES
-   ========================================================================== */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-
-th,
-td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 
@@ -596,22 +201,6 @@ table tr:hover {
 }
 
 
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
-
-footer {
-  width: 100%;
-  background: #1f2937;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
-  margin-top: 40px;
-
-  animation: footerAppear 0.8s ease;
-}
-
-
 @keyframes footerAppear {
   from {
     opacity: 0;
@@ -646,4 +235,321 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+header {
+  background-color: #0d9488;
+  color: white;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-logo {
+  height: 38px;
+  width: auto;
+  border-radius: 4px;
+}
+
+/* Header Links & Top-Right Login */
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.top-right-nav .login-btn {
+  background-color: #ffffff;
+  color: #0d9488;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.top-right-nav .login-btn:hover {
+  background-color: #f0fdf4;
+}
+
+/* ==========================================================================
+   SIDEBAR & LAYOUT STRUCTURE
+   ========================================================================== */
+.app-container {
+  display: flex;
+  margin-top: 60px; /* Offset for fixed header */
+  min-height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e293b;
+  color: white;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.sidebar-nav {
+  list-style: none;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: #0d9488;
+  color: white;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   MAIN CONTENT & CARDS
+   ========================================================================== */
+main {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.main-content {
+  margin-left: 250px; /* Offset for sidebar width */
+  padding: 2rem;
+  flex: 1;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* ==========================================================================
+   CUSTOM DIRECTIVE: card-highlight (app.js)
+   Class toggled on mouseenter/mouseleave by the directive's link function.
+   ========================================================================== */
+.card-hover {
+  box-shadow: 0 16px 32px rgba(13, 148, 136, 0.45);
+  transform: translateY(-8px) scale(1.015);
+  border: 2px solid #0d9488;
+  background-color: #f0fdfa;
+}
+
+/* ==========================================================================
+   NG-ANIMATE: ng-repeat enter/leave transitions
+   Applied automatically by AngularJS (ngAnimate module) whenever an item
+   is added to or removed from the Community Highlights / Reminders lists.
+   ========================================================================== */
+.highlight-row.ng-enter,
+.reminder-row.ng-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.highlight-row.ng-enter.ng-enter-active,
+.reminder-row.ng-enter.ng-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.highlight-row.ng-leave,
+.reminder-row.ng-leave {
+  opacity: 1;
+}
+
+.highlight-row.ng-leave.ng-leave-active,
+.reminder-row.ng-leave.ng-leave-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.auth-container {
+  max-width: 450px;
+  margin: 4rem auto;
+}
+
+/* ==========================================================================
+   AUDIO PLAYER & UI UTILITIES
+   ========================================================================== */
+.audio-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.audio-box h4 {
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+/* JS Toast Notification */
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #1e293b;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 12px;
+  position: fixed;
+  z-index: 1000;
+  right: 30px;
+  bottom: 30px;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#toast.show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from { bottom: 0; opacity: 0; }
+  to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { bottom: 30px; opacity: 1; }
+  to { bottom: 0; opacity: 0; }
+}
+
+/* ==========================================================================
+   FORMS & BUTTONS
+   ========================================================================== */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn {
+  background-color: #0d9488;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn:hover {
+  background-color: #0f766e;
+}
+
+/* Badges */
+.badge {
+  background-color: #ccfbf1;
+  color: #0f766e;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Data Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    background: #1f2937;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
 }
