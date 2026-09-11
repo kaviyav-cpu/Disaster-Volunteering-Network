@@ -5,47 +5,93 @@
   <title>Upload Completion Proof - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-animate/1.8.3/angular-animate.min.js"></script>
   <script src="app.js"></script>
 </head>
 <body ng-controller="UploadProofController">
   <header>
     <div class="header-brand">
-      <img src="images/logo.png" alt="Logo" class="header-logo">
+      <img src="avatar-placeholder.png" alt="Logo" class="header-logo">
       <h1>Upload Verification Proof</h1>
     </div>
-    <nav>
-      <a href="volunteer-dashboard.html">Dashboard</a>
-    </nav>
+    <div class="top-right-nav">
+      <a href="volunteer-dashboard.html" class="login-btn">Dashboard</a>
+    </div>
   </header>
 
-  <main class="auth-container">
-    <section class="card">
-      <h2>Submit Deployment Record</h2>
-      <form id="uploadForm" ng-submit="submitProof()">
-        <div class="form-group">
-          <label for="hours">Hours Spent on Site: </label>
-          <!-- ng-model two-way binds the slider directly to $scope.hours,
-               no oninput/updateOutput() handler needed anymore -->
-          <input type="range" id="hours" ng-model="hours" min="{{ minHours }}" max="{{ maxHours }}">
-          <!-- {{ }} interpolation + custom `hoursLabel` filter -->
-          <p>Claiming: <output>{{ hours | hoursLabel }}</output></p>
-        </div>
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Navigation Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="home.html"> Home & Join</a></li>
+        <li><a href="register.html"> Register Page</a></li>
+        <li><a href="volunteer-dashboard.html"> Volunteer Dashboard</a></li>
+        <li><a href="ngo-dashboard.html"> NGO Dashboard</a></li>
+        <li><a href="task-details.html"> Task Details</a></li>
+        <li><a href="profile.html"> User Profile</a></li>
+        <li><a href="upload-proof.html" class="active"> Upload Proof Page</a></li>
+        <li><a href="skill-matching.html"> Skill Task Matching</a></li>
+      </ul>
+    </aside>
 
-        <div class="form-group">
-          <label for="proof-file">Upload Image/Report Proof</label>
-          <input type="file" id="proof-file" accept="image/*" required onchange="angular.element(this).scope().previewImage(event)">
-        </div>
+    <main class="main-content">
+      <section class="card" style="max-width: 500px; margin: 0 auto 1.5rem;">
+        <h2>Submit Deployment Record</h2>
+        <form id="uploadForm" ng-submit="submitProof()">
+          <div class="form-group">
+            <label for="hours">Hours Spent on Site: </label>
+            <input type="range" id="hours" ng-model="hours" min="{{ minHours }}" max="{{ maxHours }}">
+            <p>Claiming: <output>{{ hours | hoursLabel }}</output></p>
+          </div>
 
-        <!-- ng-src + ng-show instead of manually toggling display/src in JS -->
-        <img ng-src="{{ imagePreview }}" ng-show="imagePreview" style="max-width:100%; margin-bottom:10px; border-radius:4px;">
+          <div class="form-group">
+            <label for="proof-file">Upload Image/Report Proof</label>
+            <input type="file" id="proof-file" accept="image/*" required onchange="angular.element(this).scope().previewImage(event)">
+          </div>
 
-        <button type="submit" class="btn" style="width: 100%;">Submit Proof</button>
-      </form>
-    </section>
-  </main>
+          <img ng-src="{{ imagePreview }}" ng-show="imagePreview" style="max-width:100%; margin-bottom:10px; border-radius:4px;">
+
+          <button type="submit" class="btn" style="width: 100%;">Submit Proof</button>
+        </form>
+      </section>
+
+      <!-- ============================================================
+           FACTORY DEMO: My Submitted Records
+           Backed by ProofFactory (app.js) — full CRUD:
+             CREATE -> submitProof() calls ProofFactory.addProof()
+             READ   -> ng-repeat over $scope.submittedProofs
+             UPDATE -> editProof($index)
+             DELETE -> deleteProof($index)
+           ============================================================ -->
+      <section class="card" ng-if="submittedProofs.length">
+        <h3>My Submitted Records (Demo — ProofFactory)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Hours Claimed</th>
+              <th>Submitted At</th>
+              <th>Image Attached</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="p in submittedProofs track by $index">
+              <td>{{ p.hours | hoursLabel }}</td>
+              <td>{{ p.submittedAt }}</td>
+              <td>{{ p.hasImage ? 'Yes' : 'No' }}</td>
+              <td>
+                <button class="btn" style="padding:2px 8px; font-size:0.75rem;" ng-click="editProof($index)">Edit</button>
+                <button class="btn" style="padding:2px 8px; font-size:0.75rem; background:#ef4444;" ng-click="deleteProof($index)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
 
   <footer>
-    <p>&copy; {{ year }} {{ appName }}</p>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
   </footer>
 </body>
 </html>
