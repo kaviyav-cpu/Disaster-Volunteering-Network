@@ -5,97 +5,137 @@
   <title>Volunteer Dashboard - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-animate/1.8.3/angular-animate.min.js"></script>
   <script src="app.js"></script>
 </head>
 <body ng-controller="VolunteerDashboardController">
   <header>
     <div class="header-brand">
-      <img src="images/logo.png" alt="Logo" class="header-logo">
+      <img src="avatar-placeholder.png" alt="Logo" class="header-logo">
       <h1>Disaster Volunteering Network</h1>
     </div>
-    <nav>
-      <a href="volunteer-dashboard.html">Dashboard</a>
-      <a href="skill-matching.html">Find Tasks</a>
-      <a href="upload-proof.html">Submit Proof</a>
-      <a href="profile.html">Profile</a>
-    </nav>
+    <div class="top-right-nav">
+      <a href="profile.html" class="login-btn">{{ volunteerName }}</a>
+    </div>
   </header>
 
-  <main style="display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem;">
-    <section>
-      <div class="card">
-        <h2>Welcome Back, {{ volunteerName }}!</h2>
-        <!-- {{ }} interpolation driven by $interval in the controller -->
-        <p>Current Time: <strong>{{ liveClock }}</strong></p>
-
-        <!-- Emergency Alert Audio -->
-        <div class="audio-box" style="margin-top: 10px;">
-          <p><strong>🚨 Emergency Broadcast:</strong> Listen to local siren audio dispatch.</p>
-          <audio controls id="sirenAudio">
-            <source src="audio/alert.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-      </div>
-
-      <!-- Disaster Awareness Video -->
-      <div class="card" style="margin-top:20px;">
-        <h3>🎥 Disaster Safety Training</h3>
-        <p>Watch the disaster preparedness video before attending your assigned task.</p>
-
-        <video width="100%" controls poster="images/video-thumbnail.jpg">
-          <source src="video/awareness.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <article class="card">
-        <h3>My Impact Goals</h3>
-        <p>Monthly Volunteering Hours Progress:</p>
-        <!-- Attribute interpolation ({{ }} inside an attribute) drives the native progress bar -->
-        <progress value="{{ hourProgress }}" max="{{ hourGoal }}"></progress>
-        <span>{{ hourProgress }} / {{ hourGoal }} Hours</span>
-
-        <p style="margin-top: 10px;">Reliability Metric Score:</p>
-        <meter value="{{ reliability }}" min="0" max="1.0">{{ reliability * 100 }}%</meter>
-        {{ reliability * 100 }}% High Reliability
-      </article>
-
-      <section class="card">
-        <h3>My Upcoming Tasks</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th>Date & Time</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- ng-repeat renders one row per task object from TaskService -->
-            <tr ng-repeat="task in tasks">
-              <td>{{ task.title }}</td>
-              <td><time>{{ task.dateLabel }}</time></td>
-              <td><span class="badge">{{ task.status }}</span></td>
-              <td>
-                <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" ng-click="checkInTask(task)">Check In</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </section>
-
-    <aside>
-      <div class="card">
-        <h3>Quick Tools</h3>
-        <button class="btn" ng-click="triggerAlert()" style="background:#ef4444; width:100%;">🚨 Sound SOS Signal</button>
-      </div>
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Navigation Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="home.html"> Home & Join</a></li>
+        <li><a href="register.html"> Register Page</a></li>
+        <li><a href="volunteer-dashboard.html" class="active"> Volunteer Dashboard</a></li>
+        <li><a href="ngo-dashboard.html"> NGO Dashboard</a></li>
+        <li><a href="task-details.html"> Task Details</a></li>
+        <li><a href="profile.html"> User Profile</a></li>
+        <li><a href="upload-proof.html"> Upload Proof Page</a></li>
+        <li><a href="skill-matching.html"> Skill Task Matching</a></li>
+      </ul>
     </aside>
-  </main>
+
+    <main class="main-content">
+      <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem;">
+        <section>
+          <div class="card">
+            <h2>Welcome Back, {{ volunteerName }}!</h2>
+            <p>Current Time: <strong>{{ liveClock }}</strong></p>
+
+            <div class="audio-box" style="margin-top: 10px;">
+              <p><strong>🚨 Emergency Broadcast:</strong> Listen to local siren audio dispatch.</p>
+              <audio controls id="sirenAudio">
+                <source src="audio/alert.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <h3>🎥 Disaster Safety Training</h3>
+            <p>Watch the disaster preparedness video before attending your assigned task.</p>
+
+            <video width="100%" controls poster="images/video-thumbnail.jpg">
+              <source src="video/awareness.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <article class="card">
+            <h3>My Impact Goals</h3>
+            <p>Monthly Volunteering Hours Progress:</p>
+            <progress value="{{ hourProgress }}" max="{{ hourGoal }}"></progress>
+            <span>{{ hourProgress }} / {{ hourGoal }} Hours</span>
+
+            <p style="margin-top: 10px;">Reliability Metric Score:</p>
+            <meter value="{{ reliability }}" min="0" max="1.0">{{ reliability * 100 }}%</meter>
+            {{ reliability * 100 }}% High Reliability
+          </article>
+
+          <section class="card">
+            <h3>My Upcoming Tasks</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="task in tasks">
+                  <td>{{ task.title }}</td>
+                  <td><time>{{ task.dateLabel }}</time></td>
+                  <td><span class="badge">{{ task.status }}</span></td>
+                  <td>
+                    <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" ng-click="checkInTask(task)">Check In</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ============================================================
+               FACTORY DEMO: My Reminders
+               Backed by ReminderFactory (app.js) — full CRUD:
+                 CREATE -> addReminder()
+                 READ   -> ng-repeat over $scope.reminders
+                 UPDATE -> editReminder($index) / toggleReminder($index)
+                 DELETE -> deleteReminder($index)
+               ============================================================ -->
+          <article class="card" card-highlight>
+            <h3>📝 My Reminders (ReminderFactory)</h3>
+            <ul style="margin-top: 0.5rem; list-style: none;">
+              <li ng-repeat="r in reminders track by $index" class="reminder-row"
+                  style="display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid #eee;">
+                <span ng-click="toggleReminder($index)"
+                      ng-style="{'text-decoration': r.done ? 'line-through' : 'none', 'color': r.done ? '#999' : '#333'}"
+                      style="cursor:pointer;">{{ r.text }}</span>
+                <span style="white-space: nowrap;">
+                  <button class="btn" style="padding:2px 8px; font-size:0.75rem;" ng-click="editReminder($index)">Edit</button>
+                  <button class="btn" style="padding:2px 8px; font-size:0.75rem; background:#ef4444;" ng-click="deleteReminder($index)">Delete</button>
+                </span>
+              </li>
+            </ul>
+            <div style="display:flex; gap:8px; margin-top:0.75rem;">
+              <input type="text" ng-model="newReminder" placeholder="Add a reminder..."
+                     style="flex:1; padding:0.5rem; border:1px solid #ccc; border-radius:4px;">
+              <button class="btn" ng-click="addReminder()">Add</button>
+            </div>
+          </article>
+        </section>
+
+        <aside>
+          <div class="card">
+            <h3>Quick Tools</h3>
+            <button class="btn" ng-click="triggerAlert()" style="background:#ef4444; width:100%;">🚨 Sound SOS Signal</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
 
   <footer>
-    <p>&copy; {{ year }} {{ appName }}</p>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
   </footer>
 </body>
 </html>
