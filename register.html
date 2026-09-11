@@ -5,74 +5,122 @@
   <title>Register - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-animate/1.8.3/angular-animate.min.js"></script>
   <script src="app.js"></script>
 </head>
 <body ng-controller="RegisterController">
   <header>
     <div class="header-brand">
-      <img src="images/logo.png" alt="Logo" class="header-logo">
+      <img src="avatar-placeholder.png" alt="Logo" class="header-logo">
       <h1>Disaster Volunteering Network</h1>
+    </div>
+    <div class="top-right-nav">
+      <a href="login.html" class="login-btn">Login</a>
     </div>
   </header>
 
-  <main class="auth-container">
-    <section class="card">
-      <h2>Join the Network</h2>
-      <p style="margin-bottom: 1rem; color: #666;">Create an account to start helping.</p>
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Navigation Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="home.html"> Home & Join</a></li>
+        <li><a href="register.html" class="active"> Register Page</a></li>
+        <li><a href="volunteer-dashboard.html"> Volunteer Dashboard</a></li>
+        <li><a href="ngo-dashboard.html"> NGO Dashboard</a></li>
+        <li><a href="task-details.html"> Task Details</a></li>
+        <li><a href="profile.html"> User Profile</a></li>
+        <li><a href="upload-proof.html"> Upload Proof Page</a></li>
+        <li><a href="skill-matching.html"> Skill Task Matching</a></li>
+      </ul>
+    </aside>
 
-      <!-- ng-submit replaces onsubmit; no event object needed, no preventDefault to write -->
-      <form id="regForm" ng-submit="submitRegistration()">
-        <div class="form-group">
-          <label for="role">Registering as:</label>
-          <!-- ng-model two-way binds the dropdown straight to user.role -->
-          <select id="role" ng-model="user.role">
-            <option value="volunteer">Volunteer</option>
-            <option value="NGO">NGO / Organization Representative</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="fullname">Full Name / Org Name</label>
-          <input type="text" id="fullname" ng-model="user.fullname" required>
-        </div>
+    <main class="main-content">
+      <section class="card" style="max-width: 500px; margin: 0 auto 1.5rem;">
+        <h2>Join the Network</h2>
+        <p style="margin-bottom: 1rem; color: #666;">Create an account to start helping.</p>
 
-        <!-- ng-show replaces the old handleRoleChange() DOM toggling -->
-        <div class="form-group" id="ngoRegField" ng-show="isNgo()">
-          <label for="registrationNo">NGO Registration Number</label>
-          <input type="text" id="registrationNo" ng-model="user.registrationNo" placeholder="REG-123456">
-        </div>
+        <form id="regForm" ng-submit="submitRegistration()">
+          <div class="form-group">
+            <label for="role">Registering as:</label>
+            <select id="role" ng-model="user.role">
+              <option value="volunteer">Volunteer</option>
+              <option value="ngo">NGO / Organization Representative</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fullname">Full Name / Org Name</label>
+            <input type="text" id="fullname" ng-model="user.fullname" required>
+          </div>
 
-        <div class="form-group">
-          <label for="reg-email">Email Address</label>
-          <input type="email" id="reg-email" ng-model="user.email" required>
-        </div>
-        <div class="form-group">
-          <label for="city">City / Region</label>
-          <input list="cities" id="city" ng-model="user.city" placeholder="Type or select a city">
-          <datalist id="cities">
-            <option value="Kolkata, India">
-            <option value="Mumbai, India">
-            <option value="Madurai, India">
-            <option value="Chennai, India">
-          </datalist>
-        </div>
-        <div class="form-group">
-          <label for="reg-pass">Password</label>
-          <input type="password" id="reg-pass" ng-model="user.password" required>
-        </div>
+          <div class="form-group" id="ngoRegField" ng-show="isNgo()">
+            <label for="registrationNo">NGO Registration Number</label>
+            <input type="text" id="registrationNo" ng-model="user.registrationNo" placeholder="REG-123456">
+          </div>
 
-        <!-- Live preview: proves the two-way binding is working as you type -->
-        <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem;" ng-if="user.fullname">
-           <strong>{{ user.fullname | capitalize }}</strong> will register as
-          <strong>{{ user.role }}</strong><span ng-if="user.city"> from {{ user.city }}</span>.
-        </p>
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <input type="email" id="reg-email" ng-model="user.email" required>
+          </div>
+          <div class="form-group">
+            <label for="city">City / Region</label>
+            <input list="cities" id="city" ng-model="user.city" placeholder="Type or select a city">
+            <datalist id="cities">
+              <option value="California, USA">
+              <option value="London, UK">
+              <option value="Tokyo, Japan">
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label for="reg-pass">Password</label>
+            <input type="password" id="reg-pass" ng-model="user.password" required>
+          </div>
 
-        <button type="submit" class="btn" style="width: 100%;">Create Account</button>
-      </form>
-    </section>
-  </main>
+          <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem;" ng-if="user.fullname">
+            Preview: <strong>{{ user.fullname | capitalize }}</strong> will register as
+            <strong>{{ user.role }}</strong><span ng-if="user.city"> from {{ user.city }}</span>.
+          </p>
+
+          <button type="submit" class="btn" style="width: 100%;">Create Account</button>
+        </form>
+      </section>
+
+      <!-- ============================================================
+           FACTORY DEMO: Registered Users
+           Backed by UserFactory (app.js) — full CRUD:
+             CREATE -> submitRegistration() calls UserFactory.addUser()
+             READ   -> ng-repeat over $scope.registeredUsers
+             UPDATE -> editUser($index)
+             DELETE -> deleteUser($index)
+           ============================================================ -->
+      <section class="card" ng-if="registeredUsers.length">
+        <h3>Recently Registered (Demo List — UserFactory)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>City</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="u in registeredUsers track by $index">
+              <td>{{ u.fullname | capitalize }}</td>
+              <td>{{ u.role }}</td>
+              <td>{{ u.city || '—' }}</td>
+              <td>
+                <button class="btn" style="padding:2px 8px; font-size:0.75rem;" ng-click="editUser($index)">Edit</button>
+                <button class="btn" style="padding:2px 8px; font-size:0.75rem; background:#ef4444;" ng-click="deleteUser($index)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
 
   <footer>
-    <p>&copy; {{ year }} {{ appName }}</p>
+    <p>&copy; 2026 Disaster Volunteering Network</p>
   </footer>
 </body>
 </html>
