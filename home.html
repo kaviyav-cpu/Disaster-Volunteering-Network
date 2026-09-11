@@ -5,12 +5,13 @@
   <title>Home - Disaster Volunteering Network</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-animate/1.8.3/angular-animate.min.js"></script>
   <script src="app.js"></script>
 </head>
 <body ng-controller="HomeController">
   <header>
     <div class="header-brand">
-      <img src="images/logo.png" alt="Logo" class="header-logo">
+      <img src="avatar-placeholder.png" alt="Logo" class="header-logo">
       <h1>{{ appName }}</h1>
     </div>
     <div class="top-right-nav">
@@ -46,7 +47,6 @@
 
       <section class="card">
         <h3>🎙️ Live Emergency Dispatch Audio Broadcast</h3>
-        <!-- {{ }} interpolation: text pulled from TaskService via the controller -->
         <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
           {{ broadcastMessage }}
         </p>
@@ -57,10 +57,39 @@
             Your browser does not support the audio element.
           </audio>
           <div style="margin-top: 8px; display: flex; gap: 8px;">
-            <!-- ng-click replaces the old inline onclick handlers -->
             <button ng-click="playAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem;">▶ Play Sound</button>
             <button ng-click="pauseAudio()" class="btn" style="padding: 4px 10px; font-size: 0.8rem; background: #64748b;">⏸ Pause</button>
           </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           FACTORY DEMO: Community Highlights
+           Backed by HighlightFactory (app.js) — full CRUD:
+             CREATE -> addHighlight()
+             READ   -> ng-repeat over $scope.highlights
+             UPDATE -> editHighlight($index)
+             DELETE -> deleteHighlight($index)
+           ============================================================ -->
+      <section class="card" card-highlight>
+        <h3>📢 Community Highlights</h3>
+        <p style="font-size: 0.85rem; color: #666;">Recent updates from the field (managed via HighlightFactory)</p>
+
+        <ul style="margin-top: 0.75rem; list-style: none;">
+          <li ng-repeat="highlight in highlights track by $index" class="highlight-row"
+              style="display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid #eee;">
+            <span>{{ highlight }}</span>
+            <span style="white-space: nowrap;">
+              <button class="btn" style="padding:2px 8px; font-size:0.75rem;" ng-click="editHighlight($index)">Edit</button>
+              <button class="btn" style="padding:2px 8px; font-size:0.75rem; background:#ef4444;" ng-click="deleteHighlight($index)">Delete</button>
+            </span>
+          </li>
+        </ul>
+
+        <div style="display:flex; gap:8px; margin-top:0.75rem;">
+          <input type="text" ng-model="newHighlight" placeholder="Add a new update..."
+                 style="flex:1; padding:0.5rem; border:1px solid #ccc; border-radius:4px;">
+          <button class="btn" ng-click="addHighlight()">Add</button>
         </div>
       </section>
 
