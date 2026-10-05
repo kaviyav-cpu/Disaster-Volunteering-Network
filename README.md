@@ -1,187 +1,412 @@
-﻿# Disaster Volunteering Network (DVN) - Full Stack Architecture
+﻿# \# Disaster Volunteering Network (DVN)
 
-A disaster response coordination platform connecting **Volunteers**, **NGOs**, and **System Administrators**, backed by **Node.js, Express, and MongoDB Compass**.
+# 
 
----
+# A full-stack disaster response and volunteer coordination platform that connects volunteers, NGOs, and system administrators through a centralized platform for managing disaster-relief activities.
 
-## 📁 Project Architecture & Clean Separation
+# 
 
-```
-Disaster-Volunteering-Network-main (2)/
-│
-├── backend/                             # Node.js & Express REST API Server
-│   ├── config/
-│   │   └── db.js                        # Mongoose connection to MongoDB Compass
-│   ├── models/                          # MongoDB Collections
-│   │   ├── User.js                      # Volunteers, NGOs, and Admin accounts
-│   │   ├── Task.js                      # Relief missions & deployments
-│   │   ├── VolunteerRequest.js          # Deployment applications
-│   │   ├── Proof.js                     # Field hours & photo proofs
-│   │   ├── SystemLog.js                 # Verified audit trail & event logs
-│   │   ├── Broadcast.js                 # Emergency siren dispatches
-│   │   ├── Reminder.js                  # Personal equipment checklists
-│   │   └── Highlight.js                 # Community field highlights
-│   ├── routes/                          # REST API Endpoints (/api/...)
-│   │   ├── authRoutes.js                # Register, Login, Users
-│   │   ├── taskRoutes.js                # Task CRUD, Apply, Check-In
-│   │   ├── volunteerRoutes.js           # Profile, Skills, Proof, Reminders
-│   │   ├── ngoRoutes.js                 # Dashboard summary, Requests, Proofs
-│   │   ├── adminRoutes.js               # Live metrics, Audit logs, User verification
-│   │   ├── broadcastRoutes.js           # Emergency siren alerts
-│   │   └── highlightRoutes.js           # Live field updates CRUD
-│   ├── seeds/
-│   │   └── seed.js                      # Populates MongoDB Compass with rich initial data
-│   ├── .env                             # Port, MongoDB URI, Secret
-│   ├── package.json
-│   └── server.js                        # Express server entrypoint (Port 5000)
-│
-├── frontend/                            # Client-Side Application
-│   ├── index.html                       # Public Home: Live audio broadcast & Highlights CRUD
-│   ├── login.html                       # Login with 1-Click Quick Demo Accounts
-│   ├── register.html                    # Role-based registration (Volunteer & NGO)
-│   ├── css/
-│   │   └── style.css                    # Unified modern styles
-│   ├── js/
-│   │   ├── api.js                       # Centralized API bridge to Node.js backend
-│   │   └── auth.js                      # User session & role routing
-│   │
-│   ├── volunteer/                       # 🤝 VOLUNTEER PORTAL
-│   │   ├── index.html                   # Dashboard: live clock, siren audio SOS, video awareness, check-in
-│   │   ├── skill-matching.html          # EMT, Rescue, Food filter with sound & match rating
-│   │   ├── task-details.html            # Mission brief, audio playback speed controller, application
-│   │   ├── upload-proof.html            # Range slider (1-12 hrs), live photo preview reader
-│   │   └── profile.html                 # Editable profile, add skill certifications, badge generator
-│   │
-│   ├── ngo/                             # 🏢 NGO PORTAL (Preserved from dvn-ngo)
-│   │   ├── index.html                   # NGO App Shell with sidebar navigation
-│   │   ├── partials/                    # All 8 preserved NGO views:
-│   │   │   ├── dashboard.html           # Real-time task & volunteer metrics
-│   │   │   ├── create-task.html         # Form to publish new disaster tasks
-│   │   │   ├── manage-tasks.html        # Task oversight, status toggling, deletion
-│   │   │   ├── volunteer-requests.html  # Review and approve volunteer applications
-│   │   │   ├── verify-proof.html        # Inspect volunteer hours & verify proofs
-│   │   │   ├── volunteer-list.html      # Mobilized volunteer directory
-│   │   │   ├── reports.html             # Operational reports & breakdown
-│   │   │   └── profile.html             # NGO registration & organization profile
-│   │   └── js/                          # AngularJS modules, routes, services & controllers
-│   │
-│   ├── admin/                           # 🛡️ SYSTEM ADMIN CONSOLE
-│   │   └── index.html                   # Live MongoDB counters, emergency siren dispatch,
-│   │                                    # user verification table, searchable audit logs
-│   │
-│   └── assets/                          # Static assets (images, audio, video)
-│
-└── Disaster-Volunteering-Network-main/   # Original backup archive preserved intact
-```
+# \## Overview
 
----
+# 
 
-## 🍃 MongoDB Compass Connection
+# The Disaster Volunteering Network (DVN) is designed to improve coordination between volunteers and NGOs during disaster-response activities.
 
-1. Open **MongoDB Compass**.
-2. Connect to the default URI:
-   ```
-   mongodb://127.0.0.1:27017
-   ```
-3. You will see the database: **`disaster_volunteering_network`** with all collections:
-   - `users`
-   - `tasks`
-   - `volunteerrequests`
-   - `proofs`
-   - `systemlogs`
-   - `broadcasts`
-   - `reminders`
-   - `highlights`
+# 
 
----
+# The platform allows volunteers to discover and apply for disaster-relief tasks, NGOs to create and manage tasks and verify volunteer contributions, and administrators to monitor users, activities, and system operations.
 
-## 🚀 Running the Application
+# 
 
-### 1. Start the Backend Server:
-```bash
-cd backend
-npm install
-node server.js
-```
-*(Server runs on `http://localhost:5000`)*
+# \## Key Features
 
-### 2. Open the Frontend:
-- Open your browser to: **`http://localhost:5000`**
-- Or open `frontend/index.html` directly.
+# 
 
-### 3. Demo Credentials (Also available via 1-Click buttons on `login.html`):
-- **Volunteer**: `kaviya@example.com` / `user`
-- **NGO (Red Cross)**: `contact@redcross.org` / `ngo`
-- **NGO (GlobalMedic)**: `contact@globalmedic.org` / `ngo`
-- **Admin**: `admin@dvn.org` / `admin`
+# \### Volunteer Module
 
-### 4. Re-seeding MongoDB anytime:
-```bash
-cd backend
-npm run seed
-```
+# 
 
-## ✅ Corrected End-to-End Data Flow
+# \* Volunteer registration and login
 
-The NGO portal is now connected to the same MongoDB data used by the Volunteer and Admin portals. The main flow is:
+# \* Volunteer profile management
 
-1. **Volunteer registers/logs in** → volunteer profile is stored in `users`.
-2. **NGO registers** → NGO starts as `Pending Verification`.
-3. **Admin approves NGO** → NGO becomes `Active` and can log in.
-4. **NGO creates/publishes a task** → task is stored with the NGO's `createdBy` user id.
-5. **Volunteer opens Skill Task Matching** → published tasks are loaded from MongoDB.
-6. **Volunteer applies** → `volunteerrequests` stores the real volunteer id + task id.
-7. **NGO opens Volunteer Requests** → the request appears automatically; Approve/Reject updates MongoDB.
-8. **Approved request** increments the task's assigned count and makes the volunteer eligible for check-in.
-9. **Volunteer checks in** → check-in is recorded on the task against the volunteer id.
-10. **Volunteer uploads proof** → only an approved task can receive a proof submission; the volunteer's history immediately changes that task to **Completed** while the proof itself remains Pending until the NGO verifies it.
-11. **NGO verifies/rejects proof** → proof status changes in MongoDB; approved hours/points update the volunteer profile.
-12. **NGO Dashboard, Reports and Volunteer List** read the same MongoDB records, so changes are reflected across pages after refresh/navigation.
-13. **Admin** sees live user/task/proof statistics and audit logs.
-14. **Login page** is the only public entry point to the Volunteer, NGO and Admin portals; the public Home page no longer exposes direct dashboard links.
+# \* Skill-based task matching
 
-### Important
-- Do not open the HTML files with `file://` for the final demo. Start the Node server and use **http://localhost:5000**.
-- If the database is empty, run `cd backend` then `npm run seed` once.
-- The project intentionally does not include `node_modules` in the corrected ZIP. `start.bat` installs dependencies automatically.
+# \* Disaster task browsing and application
 
-## Volunteer Status Flow (Updated)
+# \* Task check-in
 
-The Volunteer portal now follows this exact status flow:
+# \* Proof and volunteer-hour submission
 
-**Find Task → Apply → Applied → NGO Approves → Check In → Upload Proof → Completed**
+# \* Volunteer points and badge generation
 
-- Clicking **Apply Now** changes the button to **✓ Applied** immediately and saves the application in MongoDB.
-- The Volunteer Dashboard shows only that volunteer's own task applications.
-- Until the NGO approves the application, the dashboard shows **Applied / Waiting for NGO approval**.
-- After NGO approval, **Check In** becomes available.
-- After check-in, the dashboard shows **Checked In**.
-- After the volunteer uploads proof, the task is shown as **✓ Completed** in the Volunteer Dashboard and Profile history immediately.
-- The proof can still remain **Pending** until the NGO verifies it; this does not remove the Completed history status.
-- The Profile page contains the complete task history with Applied/Completed status and proof status.
+# \* Personal reminders and activity tracking
 
-## Portal Login Flow (Updated)
+# 
 
-The public Home page does not expose direct Volunteer, NGO or Admin dashboard links. Use **Login** and choose:
+# \### NGO Module
 
-- 🤝 Volunteer Login
-- 🏢 NGO Login
-- 🛡️ Admin Login
+# 
 
-After successful authentication, the backend role determines which portal is opened.
+# \* NGO registration and verification
 
-### Running on Windows PowerShell
+# \* NGO dashboard
 
-From the extracted project folder:
+# \* Create and manage disaster-relief tasks
 
-```powershell
-.\start.bat
-```
+# \* Review volunteer applications
 
-Then use:
+# \* Approve or reject volunteer requests
 
-```text
-http://localhost:5000
-```
+# \* Verify volunteer proof submissions
 
-Do not open the HTML files directly with `file://` for the database-connected flow.
+# \* Track volunteer activities
+
+# \* View operational reports
+
+# 
+
+# \### Admin Module
+
+# 
+
+# \* Monitor system statistics
+
+# \* Manage and verify users
+
+# \* Monitor disaster-relief activities
+
+# \* View system audit logs
+
+# \* Manage emergency broadcast information
+
+# \* Monitor platform-wide operations
+
+# 
+
+# \## Technology Stack
+
+# 
+
+# \### Frontend
+
+# 
+
+# \* HTML5
+
+# \* CSS3
+
+# \* JavaScript
+
+# \* AngularJS
+
+# 
+
+# \### Backend
+
+# 
+
+# \* Node.js
+
+# \* Express.js
+
+# \* REST APIs
+
+# 
+
+# \### Database
+
+# 
+
+# \* MongoDB
+
+# \* Mongoose
+
+# \* MongoDB Compass
+
+# 
+
+# \## Project Structure
+
+# 
+
+# ```text
+
+# Disaster-Volunteering-Network/
+
+# │
+
+# ├── backend/
+
+# │   ├── config/
+
+# │   ├── models/
+
+# │   ├── routes/
+
+# │   ├── seeds/
+
+# │   ├── package.json
+
+# │   └── server.js
+
+# │
+
+# ├── frontend/
+
+# │   ├── css/
+
+# │   ├── js/
+
+# │   ├── volunteer/
+
+# │   ├── ngo/
+
+# │   ├── admin/
+
+# │   ├── assets/
+
+# │   ├── index.html
+
+# │   ├── login.html
+
+# │   └── register.html
+
+# │
+
+# ├── .gitignore
+
+# ├── README.md
+
+# └── start.bat
+
+# ```
+
+# 
+
+# \## Application Workflow
+
+# 
+
+# ```text
+
+# Volunteer / NGO
+
+# &#x20;      │
+
+# &#x20;      ▼
+
+# &#x20;Registration / Login
+
+# &#x20;      │
+
+# &#x20;      ▼
+
+# &#x20;Role-Based Portal
+
+# &#x20;      │
+
+# &#x20;┌─────┼──────────┐
+
+# &#x20;▼     ▼          ▼
+
+# Volunteer   NGO    Admin
+
+# &#x20;  │          │       │
+
+# &#x20;  ▼          ▼       ▼
+
+# Find Tasks  Create   Monitor
+
+# Apply       Tasks    Users
+
+# Check-In    Verify   Activities
+
+# Submit      Proofs   Audit Logs
+
+# Proof
+
+# &#x20;  │
+
+# &#x20;  ▼
+
+# MongoDB
+
+# ```
+
+# 
+
+# \## Database
+
+# 
+
+# The application uses MongoDB for storing users, tasks, volunteer requests, proofs, system logs, broadcasts, reminders, and community highlights.
+
+# 
+
+# Default local MongoDB connection:
+
+# 
+
+# ```text
+
+# mongodb://127.0.0.1:27017
+
+# ```
+
+# 
+
+# Database:
+
+# 
+
+# ```text
+
+# disaster\_volunteering\_network
+
+# ```
+
+# 
+
+# \## Installation
+
+# 
+
+# \### 1. Clone the Repository
+
+# 
+
+# ```bash
+
+# git clone https://github.com/kaviyav-cpu/Disaster-Volunteering-Network.git
+
+# cd Disaster-Volunteering-Network
+
+# ```
+
+# 
+
+# \### 2. Install Backend Dependencies
+
+# 
+
+# ```bash
+
+# cd backend
+
+# npm install
+
+# ```
+
+# 
+
+# \### 3. Configure MongoDB
+
+# 
+
+# Make sure MongoDB is running locally and configure the required environment variables in the backend `.env` file.
+
+# 
+
+# Do not commit sensitive credentials or secret keys to GitHub.
+
+# 
+
+# \### 4. Start the Backend
+
+# 
+
+# ```bash
+
+# node server.js
+
+# ```
+
+# 
+
+# The backend runs on:
+
+# 
+
+# ```text
+
+# http://localhost:5000
+
+# ```
+
+# 
+
+# \### 5. Access the Application
+
+# 
+
+# Open the application through the frontend or the backend server according to the project configuration.
+
+# 
+
+# \## Data Flow
+
+# 
+
+# 1\. A volunteer or NGO registers on the platform.
+
+# 2\. User information is stored in MongoDB.
+
+# 3\. NGOs can be verified by the administrator.
+
+# 4\. Verified NGOs can create disaster-relief tasks.
+
+# 5\. Volunteers can view available tasks based on their skills.
+
+# 6\. Volunteers can apply for suitable tasks.
+
+# 7\. NGOs can approve or reject volunteer applications.
+
+# 8\. Approved volunteers can check in for assigned tasks.
+
+# 9\. Volunteers can submit proof of completed activities.
+
+# 10\. NGOs can verify submitted proofs.
+
+# 11\. Verified volunteer contributions are reflected in the volunteer profile.
+
+# 12\. Administrators can monitor users, tasks, proofs, and system activity.
+
+# 
+
+# \## Purpose
+
+# 
+
+# The main objective of DVN is to provide a centralized digital platform for improving volunteer mobilization, NGO coordination, task management, and transparency during disaster-relief operations.
+
+# 
+
+# \## Future Enhancements
+
+# 
+
+# \* Cloud deployment
+
+# \* Real-time notifications
+
+# \* Location-based volunteer matching
+
+# \* Mobile application
+
+# \* Advanced disaster analytics
+
+# \* Automated monitoring and reporting
+
+# \* CI/CD-based automated deployment
+
+# 
+
+# \## License
+
+# 
+
+# This project is developed for academic and educational purposes.
+
+
+
