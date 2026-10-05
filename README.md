@@ -1,4 +1,4 @@
-﻿# \# Disaster Volunteering Network (DVN)
+# \# Disaster Volunteering Network (DVN)
 
 # 
 
@@ -379,6 +379,36 @@
 # 
 
 # The main objective of DVN is to provide a centralized digital platform for improving volunteer mobilization, NGO coordination, task management, and transparency during disaster-relief operations.
+
+# 
+
+# \## CI/CD Pipeline
+
+# 
+
+# The Disaster Volunteering Network implements an automated Continuous Integration and Continuous Deployment (CI/CD) pipeline:
+
+# 
+
+# 1\. Continuous Integration (CI) uses GitHub Actions.
+
+# 2\. The CI workflow runs on pushes and pull requests to the `main` branch.
+
+# 3\. CI sets up Node.js 20 and installs backend dependencies using `npm ci`.
+
+# 4\. CI checks backend server syntax using `node --check server.js`.
+
+# 5\. Continuous Deployment (CD) runs automatically after a successful push to the `main` branch.
+
+# 6\. Pull requests do not trigger deployment.
+
+# 7\. GitHub Actions triggers a Render Deploy Hook via a POST request.
+
+# 8\. Render automatically builds and deploys the backend Web Service.
+
+# 9\. Deployment secrets (`RENDER_DEPLOY_HOOK`) are securely stored in GitHub Actions Secrets.
+
+# 10\. Production environment variables are stored securely in the Render dashboard environment configuration.
 
 # 
 
