@@ -1,0 +1,16 @@
+<div class="page">
+  <h2 class="page-title">Reports</h2>
+
+  <div class="stat-cards">
+    <div class="stat-card"><p class="stat-label">Total Tasks</p><p class="stat-value">{{ vm.summary.totalTasks }}</p></div>
+    <div class="stat-card"><p class="stat-label">Published</p><p class="stat-value">{{ vm.summary.publishedTasks }}</p></div>
+    <div class="stat-card"><p class="stat-label">Draft</p><p class="stat-value">{{ vm.summary.draftTasks }}</p></div>
+    <div class="stat-card"><p class="stat-label">Closed</p><p class="stat-value">{{ vm.summary.closedTasks }}</p></div>
+  </div>
+  <div class="stat-cards">
+    <div class="stat-card"><p class="stat-label">Volunteers Assigned</p><p class="stat-value">{{ vm.summary.totalVolunteersAssigned }}</p></div>
+    <div class="stat-card"><p class="stat-label">Approved Volunteers</p><p class="stat-value">{{ vm.approvedVolunteers }}</p></div>
+    <div class="stat-card"><p class="stat-label">Proofs Verified</p><p class="stat-value">{{ vm.verifiedProofs }}</p></div>
+    <div class="stat-card"><p class="stat-label">Proofs Pending</p><p class="stat-value">{{ vm.pendingProofs }}</p></div>
+  </div>
+</div>

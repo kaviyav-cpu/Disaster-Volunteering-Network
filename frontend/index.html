@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav" id="headerNav">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="register.html" class="btn btn-secondary">Register</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <main class="main-content">
+      <section class="card">
+        <h2>Connecting Volunteers with Rapid Disaster Relief</h2>
+        <p style="margin-top: 0.5rem; color: #555;">
+          Join thousands of trained responders, verified NGOs, and emergency teams coordinating in real-time across disaster zones, flood evacuation camps, and critical supply hubs.
+        </p>
+        <div style="margin-top: 1.25rem; display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="register.html" class="btn">Get Started - Join Network</a>
+          <a href="volunteer/skill-matching.html" class="btn btn-secondary">Explore Disaster Deployments</a>
+          <a href="login.html" class="btn btn-success">Portal Sign In</a>
+        </div>
+      </section>
+      <!-- Network Introduction Video -->
+      <section class="card">
+        <h3>🎥 Welcome to the Disaster Volunteering Network</h3>
+        <p style="font-size: 0.95rem; color: #475569; margin: 0.5rem 0 1rem;">
+          Watch this short introduction to understand how volunteers, NGOs and administrators work together during disaster response.
+        </p>
+        <div class="video-box" style="text-align:center;">
+          <video id="introVideo" controls playsinline preload="metadata"
+                 style="width:100%; max-height:420px; background:#0f172a; border-radius:10px;">
+            <source src="assets/video/dvn-intro.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+      </section>
+
+      <!-- Community Highlights (public read-only view) -->
+      <section class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3>📢 Community Field Highlights</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Recent field operations & volunteer impact (Published by the Administrator)</p>
+          </div>
+          <span class="badge" id="highlightCount">0 Updates</span>
+        </div>
+
+        <ul id="highlightList" style="margin-top: 1rem; list-style: none;">
+          <li style="color: #64748b;">Loading updates...</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <div id="toast"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Update Header with logged in user if available
+    const user = DvnAuth.getUser();
+    if (user) {
+      document.getElementById('headerNav').innerHTML = `
+        <span class="user-badge-header">👤 ${user.name} (${user.role})</span>
+        <button onclick="DvnAuth.logout()" class="btn btn-sm btn-secondary">Logout</button>
+      `;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Load Live Broadcast
+    async function loadBroadcast() {
+      const res = await DvnApi.getLatestBroadcast();
+      if (res && res.broadcast) {
+        document.getElementById('broadcastText').innerText = res.broadcast.message;
+      }
+    }
+
+    // Load Highlights from MongoDB
+    async function loadHighlights() {
+      const res = await DvnApi.getHighlights();
+      const list = document.getElementById('highlightList');
+      if (res && res.highlights && res.highlights.length) {
+        document.getElementById('highlightCount').innerText = res.highlights.length + ' Updates';
+        list.innerHTML = res.highlights.map(h => `
+          <li style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <span>${escapeHtml(h)}</span>
+          </li>
+        `).join('');
+      } else {
+        list.innerHTML = '<li style="color: #64748b;">No recent field updates found.</li>';
+      }
+    }
+
+
+    loadBroadcast();
+    loadHighlights();
+  </script>
+</body>
+</html>

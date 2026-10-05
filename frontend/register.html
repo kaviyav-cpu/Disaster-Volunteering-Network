@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="index.html">Home</a>
+      <a href="login.html" class="login-btn">Login</a>
+    </div>
+  </header>
+
+  <main class="auth-container">
+    <div class="auth-card">
+      <h2>Join the Network</h2>
+      <p style="margin-bottom: 1.25rem; color: #64748b;">Create an account to mobilize and coordinate disaster relief.</p>
+
+      <form id="regForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label for="role">Registering as:</label>
+          <select id="role" onchange="handleRoleChange(this.value)">
+            <option value="volunteer">Volunteer Responder</option>
+            <option value="ngo">NGO / Relief Organization</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fullname">Full Name / Organization Name</label>
+          <input type="text" id="fullname" required placeholder="e.g. Kaviya / Blue Shield Relief" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group" id="ngoRegField" style="display: none;">
+          <label for="registrationNo">NGO Government Registration Number</label>
+          <input type="text" id="registrationNo" placeholder="REG-123456">
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" required placeholder="name@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="city">City / Region</label>
+          <input list="cities" id="city" placeholder="Type or select your location" oninput="updatePreview()">
+          <datalist id="cities">
+            <option value="California, USA">
+            <option value="London, UK">
+            <option value="Chennai, India">
+            <option value="Tokyo, Japan">
+            <option value="Sydney, Australia">
+          </datalist>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-pass">Password</label>
+          <input type="password" id="reg-pass" required placeholder="Minimum 4 characters">
+        </div>
+
+        <p id="regPreview" style="font-size: 0.85rem; color: #0d9488; margin-bottom: 1rem; min-height: 1.2rem;"></p>
+        <div id="regMessage" style="font-size: 0.88rem; margin-bottom: 10px; color: var(--danger); display: none;"></div>
+
+        <button type="submit" id="regBtn" class="btn" style="width: 100%;">Create Account</button>
+      </form>
+
+      <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+        Already registered? <a href="login.html" style="color: var(--primary); font-weight: 600;">Sign in here</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function handleRoleChange(role) {
+      const ngoField = document.getElementById('ngoRegField');
+      if (role === 'ngo') {
+        ngoField.style.display = 'block';
+      } else {
+        ngoField.style.display = 'none';
+      }
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const name = document.getElementById('fullname').value.trim();
+      const role = document.getElementById('role').value;
+      const city = document.getElementById('city').value.trim();
+      const preview = document.getElementById('regPreview');
+      if (name) {
+        preview.innerText = 'Preview: ' + name + ' will register as ' + role + (city ? ' from ' + city : '') + '.';
+      } else {
+        preview.innerText = '';
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('fullname').value.trim();
+      const role = document.getElementById('role').value;
+      const email = document.getElementById('reg-email').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const registrationNo = document.getElementById('registrationNo').value.trim();
+      const password = document.getElementById('reg-pass').value;
+      const msg = document.getElementById('regMessage');
+      const btn = document.getElementById('regBtn');
+
+      msg.style.display = 'none';
+      btn.disabled = true;
+      btn.innerText = 'Registering...';
+
+      const res = await DvnApi.register({ name, role, email, city, registrationNo, password });
+      btn.disabled = false;
+      btn.innerText = 'Create Account';
+
+      if (res && res.success) {
+        DvnAuth.showToast('Registration successful! Please sign in.');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+      } else {
+        msg.innerText = (res && res.message) ? res.message : 'Registration failed. Please check your inputs.';
+        msg.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

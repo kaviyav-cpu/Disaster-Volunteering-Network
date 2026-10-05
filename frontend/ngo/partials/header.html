@@ -1,0 +1,13 @@
+<header class="topbar">
+  <h1 class="app-title">Disaster Volunteering Network <span class="role-tag">NGO</span></h1>
+  <div class="topbar-right">
+    <div class="avatar">{{ head.user.initial }}</div>
+    <div class="bell-wrap" ng-click="head.toggleNotifications()">
+      <span class="bell">&#128276;</span>
+      <span class="badge" ng-if="head.unreadCount > 0">{{ head.unreadCount }}</span>
+    </div>
+    <ul class="notif-dropdown" ng-if="head.showDropdown">
+      <li ng-repeat="n in head.notifications" ng-bind="n.message"></li>
+    </ul>
+  </div>
+</header>

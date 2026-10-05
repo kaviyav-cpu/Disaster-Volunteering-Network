@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer Dashboard - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="volunteer"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <span class="user-badge-header">🤝 Volunteer: <strong id="volHeaderName">Kaviya</strong></span>
+      <a href="profile.html" class="btn btn-sm btn-secondary">Profile</a>
+      <button onclick="DvnAuth.logout()" class="btn btn-sm btn-danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Volunteer Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html" class="active">📊 Dashboard</a></li>
+        <li><a href="skill-matching.html">🎯 Skill Task Matching</a></li>
+        <li><a href="task-details.html">📋 Task Details</a></li>
+        <li><a href="upload-proof.html">📤 Upload Proof</a></li>
+        <li><a href="profile.html">👤 My Profile & Badges</a></li>
+        <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 8px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 1.5rem;">
+        <div>
+          <!-- Welcome & Live Clock -->
+          <div class="card">
+            <h2>Welcome Back, <span id="volNameDisplay">Kaviya</span>!</h2>
+            <p style="color: #64748b;">Current Network Dispatch Time: <strong id="liveClock" style="color: var(--primary-dark);">--:--:--</strong></p>
+
+            <div class="audio-box" style="margin-top: 12px;">
+              <p><strong>🚨 Emergency Crisis Dispatch Broadcast:</strong></p>
+              <p id="broadcastMsg" style="font-size: 0.85rem; color: #475569; margin: 4px 0 8px;">Loading crisis alert...</p>
+              <audio controls id="sirenAudio" style="width: 100%;">
+                <source src="../assets/audio/alexis_gaming_cam-accepter-2-394924.mp3" type="audio/mpeg">
+              </audio>
+              <div style="margin-top: 6px;">
+                <button class="btn btn-sm btn-danger" onclick="triggerSos()">🚨 Broadcast SOS to Local Coordinator</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Awareness Training -->
+          <div class="card">
+            <h3>🎥 Disaster Safety & Field Awareness Briefing</h3>
+            <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 10px;">
+              Review disaster protocol guidance before deploying to flood or storm sectors.
+            </p>
+            <div class="video-box" style="text-align: center;">
+              <video width="100%" controls style="max-height: 280px; background: #000; border-radius: 6px;">
+                <source src="../assets/video/Awareness" type="video/mp4">
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+          </div>
+
+          <!-- Upcoming Tasks Table with Check-In -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3>My Assigned Relief Deployments</h3>
+              <a href="skill-matching.html" class="btn btn-sm">+ Find More Tasks</a>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Task Title</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="tasksTableBody">
+                <tr><td colspan="4" style="text-align: center; color: #64748b;">Loading assigned missions...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <!-- Impact Goals & Reliability Score -->
+          <article class="card">
+            <h3>My Field Impact</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">Monthly Volunteering Hours:</p>
+            <progress id="hourProgress" value="18" max="25" style="margin-top: 4px;"></progress>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-top: 2px;">
+              <span id="hoursText">18 / 25 Hours</span>
+              <span style="color: var(--primary);">72% Goal Met</span>
+            </div>
+
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 14px;">Reliability Metric Score:</p>
+            <meter id="reliabilityMeter" value="0.95" min="0" max="1.0" style="margin-top: 4px;"></meter>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #065f46; margin-top: 2px;">
+              ★ 95% High Reliability Tier
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>📋 My Task History</h3>
+            <p style="font-size: 0.8rem; color: #64748b;">Your applications and completed tasks</p>
+            <div id="dashboardHistory" style="margin-top:10px;">Loading history...</div>
+            <a href="profile.html" class="btn btn-sm btn-secondary" style="width:100%;margin-top:10px;">View Full History</a>
+          </article>
+
+          <!-- Reminders (CRUD connected to MongoDB) -->
+          <article class="card">
+            <h3>📝 My Field Reminders</h3>
+            <p style="font-size: 0.8rem; color: #64748b;">Personal equipment and schedule checklists</p>
+            <ul id="remindersList" style="margin-top: 10px; list-style: none;">
+              <li style="color: #64748b; font-size: 0.85rem;">Loading reminders...</li>
+            </ul>
+
+            <div style="display: flex; gap: 6px; margin-top: 10px;">
+              <input type="text" id="newReminderInput" placeholder="Add a reminder..." style="flex: 1; padding: 6px 10px; font-size: 0.85rem;">
+              <button class="btn btn-sm" onclick="addReminder()">Add</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    let currentUser = DvnAuth.getUser() || { name: 'Kaviya', email: 'kaviya@example.com' };
+    document.getElementById('volHeaderName').innerText = currentUser.name;
+    document.getElementById('volNameDisplay').innerText = currentUser.name;
+
+    // Live clock
+    function updateClock() {
+      document.getElementById('liveClock').innerText = new Date().toLocaleTimeString();
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // SOS broadcast
+    function triggerSos() {
+      const audio = document.getElementById('sirenAudio');
+      if (audio) audio.play().catch(e => console.log(e));
+      DvnAuth.showToast('🚨 SOS broadcasted to Regional Crisis Coordinator!');
+    }
+
+    // Load Live Broadcast
+    async function loadBroadcast() {
+      const res = await DvnApi.getLatestBroadcast();
+      if (res && res.broadcast) {
+        document.getElementById('broadcastMsg').innerText = res.broadcast.message;
+      }
+    }
+
+    // Load only the volunteer's own task applications/assignments.
+    async function loadTasks() {
+      const [historyRes, tasksRes] = await Promise.all([
+        DvnApi.getVolunteerHistory(currentUser.email),
+        DvnApi.getTasks()
+      ]);
+      const history = (historyRes && historyRes.history) || [];
+      const taskMap = new Map(((tasksRes && tasksRes.tasks) || []).map(t => [String(t._id), t]));
+      const tbody = document.getElementById('tasksTableBody');
+
+      if (history.length) {
+        tbody.innerHTML = history.slice(0, 8).map(h => {
+          const t = taskMap.get(String(h.task));
+          const proofCompleted = h.historyStatus === 'Completed';
+          const approved = h.status === 'Approved';
+          const checkedIn = t && (t.assignedVolunteers || []).some(v => String(v.volunteerId) === String(currentUser._id) && v.checkedIn);
+          let status = proofCompleted ? 'Completed' : (checkedIn ? 'Checked In' : (approved ? 'Approved' : 'Applied'));
+          let action = proofCompleted
+            ? '<span class="badge pill-approved">✓ Completed</span>'
+            : approved
+              ? `<button class="btn btn-sm ${checkedIn ? 'btn-success' : ''}" onclick="checkInTask('${h.task}', '${String(h.taskTitle).replace(/'/g, "\\'")}')" ${checkedIn ? 'disabled' : ''}>${checkedIn ? '✓ Checked In' : 'Check In'}</button>`
+              : '<span style="font-size:.78rem;color:#64748b;">Waiting for NGO approval</span>';
+          return `<tr>
+            <td><strong>${h.taskTitle}</strong><div style="font-size:.78rem;color:#64748b;">${t ? '📍 ' + t.location : ''}</div></td>
+            <td>${t ? t.date : new Date(h.appliedAt).toLocaleDateString()}<br><small style="color:#64748b;">${t ? t.time : ''}</small></td>
+            <td><span class="badge ${status === 'Completed' || status === 'Checked In' || status === 'Approved' ? 'pill-approved' : 'pill-pending'}">${status}</span></td>
+            <td>${action}</td>
+          </tr>`;
+        }).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" style="color:#64748b;">No tasks applied yet. <a href="skill-matching.html">Find a task</a>.</td></tr>';
+      }
+    }
+
+    async function checkInTask(id, title) {
+      const res = await DvnApi.checkInTask(id, currentUser.name);
+      if (res && res.success) {
+        DvnAuth.showToast('Checked into ' + title + ' successfully!');
+        loadTasks();
+      }
+    }
+
+
+    async function loadHistory() {
+      const res = await DvnApi.getVolunteerHistory(currentUser.email);
+      const box = document.getElementById('dashboardHistory');
+      const history = (res && res.history) || [];
+      if (!history.length) { box.innerHTML = '<p style="color:#64748b;font-size:.85rem;">No task history yet. Apply for a disaster task to begin.</p>'; return; }
+      box.innerHTML = history.slice(0,5).map(h => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);gap:10px;">
+          <div><strong>${h.taskTitle}</strong><div style="font-size:.75rem;color:#64748b;">Applied ${new Date(h.appliedAt).toLocaleDateString()}</div></div>
+          <span class="badge ${h.historyStatus === 'Completed' ? 'pill-approved' : 'pill-pending'}">${h.historyStatus === 'Completed' ? '✓ Completed' : 'Applied'}</span>
+        </div>`).join('');
+    }
+
+    // Load Reminders from MongoDB
+    async function loadReminders() {
+      const res = await DvnApi.getReminders(currentUser.email);
+      const list = document.getElementById('remindersList');
+      if (res && res.reminders && res.reminders.length) {
+        list.innerHTML = res.reminders.map(r => `
+          <li style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem;">
+            <span onclick="toggleReminder('${r._id}', ${!r.done})" style="cursor: pointer; text-decoration: ${r.done ? 'line-through' : 'none'}; color: ${r.done ? '#94a3b8' : 'inherit'};">
+              ${r.done ? '✓' : '○'} ${r.text}
+            </span>
+            <button class="btn btn-sm btn-danger" style="padding: 1px 6px; font-size: 0.72rem;" onclick="deleteReminder('${r._id}')">✕</button>
+          </li>
+        `).join('');
+      } else {
+        list.innerHTML = '<li style="color: #64748b; font-size: 0.85rem;">No reminders added.</li>';
+      }
+    }
+
+    async function addReminder() {
+      const input = document.getElementById('newReminderInput');
+      const text = input.value.trim();
+      if (!text) return;
+      await DvnApi.addReminder(text, currentUser.email);
+      input.value = '';
+      loadReminders();
+    }
+
+    async function toggleReminder(id, done) {
+      await DvnApi.toggleReminder(id, done);
+      loadReminders();
+    }
+
+    async function deleteReminder(id) {
+      await DvnApi.deleteReminder(id);
+      loadReminders();
+    }
+
+    loadBroadcast();
+    loadTasks();
+    loadReminders();
+    loadHistory();
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Details - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="volunteer"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="profile.html">Profile</a>
+      <a href="../login.html" class="login-btn">Logout</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Volunteer Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">📊 Dashboard</a></li>
+        <li><a href="skill-matching.html">🎯 Skill Task Matching</a></li>
+        <li><a href="task-details.html" class="active">📋 Task Details</a></li>
+        <li><a href="upload-proof.html">📤 Upload Proof</a></li>
+        <li><a href="profile.html">👤 My Profile & Badges</a></li>
+        <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 8px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 id="taskTitle">Flood Relief Food Distribution</h2>
+            <p style="color: #64748b; font-size: 0.9rem;" id="taskSubtitle">Location: City Center Shelter • Sector 3</p>
+          </div>
+          <span class="badge pill-approved" id="taskStatusBadge">Status: Published</span>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <h4>Mission Description & Field Instructions:</h4>
+          <p id="taskDesc" style="color: #475569; margin-top: 6px; line-height: 1.6;">
+            Assist emergency coordinators with receiving, inventorying, and distributing hot food meals and clean drinking water jerrycans to 450 displaced individuals relocated from flooded low-lying areas.
+          </p>
+        </div>
+
+        <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 0.78rem; color: #64748b;">Scheduled Date</div>
+            <strong id="taskDate">2026-08-15</strong>
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 0.78rem; color: #64748b;">Shift Hours</div>
+            <strong id="taskTime">09:00 AM - 02:00 PM</strong>
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 0.78rem; color: #64748b;">Capacity / Slots</div>
+            <strong id="taskCapacity">9 / 15 Volunteers Assigned</strong>
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 0.78rem; color: #64748b;">Required Skills</div>
+            <strong id="taskSkills">Physical Fitness, Teamwork</strong>
+          </div>
+        </div>
+
+        <!-- Audio Briefing & Speed Controls -->
+        <div class="audio-box" style="margin-top: 1.5rem;">
+          <h4>🎧 Field Commander Audio Briefing</h4>
+          <p style="font-size: 0.85rem; color: #64748b; margin: 4px 0 8px;">Listen to safety protocols before reporting to the site.</p>
+          <audio id="fieldBriefing" controls style="width: 100%;">
+            <source src="../assets/audio/alexis_gaming_cam-accepter-2-394924.mp3" type="audio/mpeg">
+          </audio>
+          <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <span style="font-size: 0.82rem; font-weight: 600;">Playback Speed:</span>
+            <button class="btn btn-sm btn-secondary" onclick="setSpeed(0.75)">0.75x</button>
+            <button class="btn btn-sm btn-secondary" onclick="setSpeed(1.0)">1.0x (Normal)</button>
+            <button class="btn btn-sm btn-secondary" onclick="setSpeed(1.25)">1.25x</button>
+            <button class="btn btn-sm btn-secondary" onclick="setSpeed(1.5)">1.5x</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 10px;">
+          <button id="applyBtn" class="btn" style="padding: 10px 24px; font-size: 1rem;" onclick="submitApplication()">
+            Submit Application for Deployment ✓
+          </button>
+          <a href="skill-matching.html" class="btn btn-secondary" style="padding: 10px 18px;">Back to Tasks</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    const user = DvnAuth.getUser() || { name: 'Kaviya', email: 'kaviya@example.com' };
+    let currentTaskId = new URLSearchParams(window.location.search).get('id');
+
+    async function loadDetails() {
+      await loadApplicationState();
+      if (currentTaskId) {
+        const res = await DvnApi.getTask(currentTaskId);
+        if (res && res.task) {
+          const t = res.task;
+          document.getElementById('taskTitle').innerText = t.title;
+          document.getElementById('taskSubtitle').innerText = 'Location: ' + t.location + ' • NGO: ' + (t.ngoName || 'Disaster Relief');
+          document.getElementById('taskDesc').innerText = t.description || 'Emergency field duty deployment.';
+          document.getElementById('taskDate').innerText = t.date;
+          document.getElementById('taskTime').innerText = t.time;
+          document.getElementById('taskCapacity').innerText = (t.volunteersAssigned || 0) + ' / ' + (t.capacity || 10) + ' Volunteers Assigned';
+          document.getElementById('taskSkills').innerText = (t.skillsRequired || []).join(', ') || 'General Duty';
+        }
+      }
+    }
+
+
+    async function loadApplicationState() {
+      if (!currentTaskId) return;
+      const res = await DvnApi.getVolunteerApplications(user.email);
+      const existing = (res && res.requests || []).find(r => String(r.task) === String(currentTaskId));
+      const btn = document.getElementById('applyBtn');
+      if (existing) {
+        btn.disabled = true;
+        btn.innerText = existing.status === 'Approved' ? '✓ Applied • Approved by NGO' : '✓ Applied';
+        btn.style.backgroundColor = '#166534';
+        document.getElementById('taskStatusBadge').innerText = existing.status === 'Approved' ? 'Application: Approved' : 'Application: Applied';
+      }
+    }
+
+    function setSpeed(speed) {
+      const audio = document.getElementById('fieldBriefing');
+      if (audio) {
+        audio.playbackRate = speed;
+        DvnAuth.showToast('Audio playback speed set to ' + speed + 'x');
+      }
+    }
+
+    async function submitApplication() {
+      const btn = document.getElementById('applyBtn');
+      btn.disabled = true;
+      btn.innerText = 'Submitting...';
+
+      const res = await DvnApi.applyForTask(currentTaskId || '66e9a0000000000000000001', {
+        volunteerName: user.name,
+        volunteerEmail: user.email,
+        skills: user.skills || [],
+        volunteerId: user._id,
+        notes: 'Submitted via Task Details portal.'
+      });
+
+      if (res && res.success) {
+        btn.innerText = '✓ Applied';
+        btn.style.backgroundColor = '#166534';
+        DvnAuth.showToast('Application submitted. Status: Applied');
+      } else {
+        btn.disabled = false;
+        btn.innerText = 'Submit Application for Deployment ✓';
+        DvnAuth.showToast((res && res.message) || 'Application could not be submitted.');
+      }
+    }
+
+    loadDetails();
+  </script>
+</body>
+</html>

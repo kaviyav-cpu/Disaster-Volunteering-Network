@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    header { background-color: #0f172a; border-bottom: 1px solid #334155; }
+    .header-brand h1 { color: #f8fafc; }
+    .header-logo { filter: brightness(1.2); }
+    .admin-stat { background: #ffffff; border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); text-align: center; }
+    .admin-stat-num { font-size: 2rem; font-weight: 700; color: #0d9488; }
+  </style>
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="admin"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>System Administration Console</h1>
+    </a>
+    <div class="top-right-nav">
+      <span class="user-badge-header" style="background: #334155; color: #f8fafc;">🛡️ Administrator: Admin Director</span>
+      <a href="../index.html" style="color: #cbd5e1;">Home</a>
+      <button onclick="DvnAuth.logout()" class="btn btn-sm btn-danger">System Logout</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Admin Console</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html" class="active">📊 Overview & Logs</a></li>
+        <li><a href="#usersSection">👥 User & NGO Management</a></li>
+        <li><a href="#broadcastSection">🚨 Emergency Dispatch</a></li>
+        <li style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 10px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+
+      <div style="margin-top: 2rem; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); font-size: 0.8rem;">
+        <strong>🍃 MongoDB Compass:</strong>
+        <p style="color: #64748b; margin-top: 4px;">Host: 127.0.0.1:27017</p>
+        <p style="color: #64748b;">DB: disaster_volunteering_network</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- Live Stats from MongoDB -->
+      <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="admin-stat">
+          <p style="color: #64748b; font-size: 0.85rem;">Total Volunteers</p>
+          <div class="admin-stat-num" id="statVolunteers">12,450</div>
+        </div>
+        <div class="admin-stat">
+          <p style="color: #64748b; font-size: 0.85rem;">Registered NGOs</p>
+          <div class="admin-stat-num" id="statNgos">380</div>
+        </div>
+        <div class="admin-stat">
+          <p style="color: #64748b; font-size: 0.85rem;">Active Relief Tasks</p>
+          <div class="admin-stat-num" id="statTasks">24</div>
+        </div>
+        <div class="admin-stat">
+          <p style="color: #64748b; font-size: 0.85rem;">Verified Hours</p>
+          <div class="admin-stat-num" id="statHours">1,420</div>
+        </div>
+        <div class="admin-stat">
+          <p style="color: #64748b; font-size: 0.85rem;">Network Health</p>
+          <div style="margin-top: 6px;">
+            <mark style="background-color: #dcfce7; color: #166534; font-weight: 700; padding: 4px 10px; border-radius: 6px;">ALL ONLINE</mark>
+          </div>
+        </div>
+      </section>
+
+      <!-- Emergency Broadcast Dispatcher -->
+      <section class="card" id="broadcastSection">
+        <h3>🚨 Emergency Siren & Crisis Broadcast Dispatcher</h3>
+        <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 10px;">
+          Transmit high-priority alert messages to all active field volunteer and NGO dashboards in real-time.
+        </p>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="adminBroadcastInput" placeholder="Enter emergency broadcast alert (e.g. Flash Flood Alert: Evacuate Ward 4 to North Shelter)..." style="flex: 1;">
+          <button class="btn btn-danger" onclick="dispatchEmergencyBroadcast()">📢 Transmit Siren Alert</button>
+        </div>
+      </section>
+
+      <!-- User & NGO Management Table -->
+      <section class="card" id="usersSection">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3>User & Organization Verification</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Review, verify, or suspend registered disaster responders and NGOs</p>
+          </div>
+          <button class="btn btn-sm" onclick="loadUsers()">🔄 Refresh Users</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name / Organization</th>
+              <th>Role</th>
+              <th>Location</th>
+              <th>Reg No / ID</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading user records from MongoDB...</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Community Highlights Management -->
+      <section class="card" id="highlightSection">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div>
+            <h3>📢 Community Field Highlights</h3>
+            <p style="font-size:.85rem;color:#64748b;">Only administrators can publish or remove public homepage highlights.</p>
+          </div>
+          <span class="badge" id="adminHighlightCount">0 Updates</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <input type="text" id="adminHighlightInput" placeholder="Enter a field update for the public homepage..." style="flex:1;">
+          <button class="btn" onclick="adminAddHighlight()">Publish Update</button>
+        </div>
+        <ul id="adminHighlightList" style="margin-top:12px;list-style:none;"></ul>
+      </section>
+
+      <!-- Verified System Audit Log Table (with filter) -->
+      <section class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3>Verified System Audit Log Entries</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Immutable security and action logs recorded from network operations</p>
+          </div>
+          <input type="text" id="logSearch" placeholder="Search logs..." onkeyup="filterLogs()" style="max-width: 250px; padding: 6px 10px; font-size: 0.85rem;">
+        </div>
+
+        <table id="logTable">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Level</th>
+              <th>Event Log</th>
+              <th>Source IP</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody">
+            <!-- Dynamic logs -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — System Administration Console (Node.js & MongoDB Compass)</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    let allLogs = [];
+
+    async function loadAdminHighlights() {
+      const res = await DvnApi.getHighlights();
+      const list = document.getElementById('adminHighlightList');
+      const items = (res && res.highlights) || [];
+      document.getElementById('adminHighlightCount').innerText = items.length + ' Updates';
+      list.innerHTML = items.length ? items.map(h => `
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);">
+          <span>${escapeHtml(h)}</span>
+          <button class="btn btn-sm btn-danger" onclick="adminDeleteHighlight(${JSON.stringify(h)})">Delete</button>
+        </li>`).join('') : '<li style="color:#64748b;">No published highlights.</li>';
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    async function adminAddHighlight() {
+      const input = document.getElementById('adminHighlightInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const res = await DvnApi.addHighlight(text);
+      if (res && res.success) {
+        input.value = '';
+        DvnAuth.showToast('Highlight published on the homepage.');
+        loadAdminHighlights();
+      } else {
+        DvnAuth.showToast((res && res.message) || 'Only administrators can publish highlights.');
+      }
+    }
+
+    async function adminDeleteHighlight(text) {
+      const res = await DvnApi.deleteHighlight(text);
+      if (res && res.success) {
+        DvnAuth.showToast('Highlight removed from homepage.');
+        loadAdminHighlights();
+      } else {
+        DvnAuth.showToast((res && res.message) || 'Only administrators can remove highlights.');
+      }
+    }
+
+    // Load Admin Stats from MongoDB
+    async function loadStats() {
+      const res = await DvnApi.getAdminStats();
+      if (res && res.stats) {
+        document.getElementById('statVolunteers').innerText = Number(res.stats.totalVolunteers).toLocaleString();
+        document.getElementById('statNgos').innerText = Number(res.stats.registeredNgos).toLocaleString();
+        document.getElementById('statTasks').innerText = Number(res.stats.activeTasks).toLocaleString();
+        document.getElementById('statHours').innerText = Number(res.stats.totalVerifiedHours).toLocaleString();
+      }
+    }
+
+    // Load Users from MongoDB
+    async function loadUsers() {
+      const res = await DvnApi.getUsers();
+      const tbody = document.getElementById('usersTableBody');
+      if (res && res.users && res.users.length) {
+        tbody.innerHTML = res.users.map(u => `
+          <tr>
+            <td>
+              <strong>${u.name}</strong><br>
+              <small style="color: #64748b;">${u.email}</small>
+            </td>
+            <td><span class="badge" style="background: ${u.role === 'admin' ? '#fef3c7' : (u.role === 'ngo' ? '#d1fae5' : '#e0f2fe')}; color: #0f172a;">${u.role.toUpperCase()}</span></td>
+            <td>${u.city || 'Regional'}</td>
+            <td>${u.registrationNo || 'VOL-' + u._id.slice(-4).toUpperCase()}</td>
+            <td>
+              <span class="pill ${u.status === 'Active' ? 'pill-approved' : (u.status === 'Pending Verification' ? 'pill-pending' : 'pill-danger')}">
+                ${u.status || 'Active'}
+              </span>
+            </td>
+            <td>
+              ${u.role !== 'admin' ? `
+                <button class="btn btn-sm btn-success" onclick="setUserStatus('${u._id}', 'Active')" ${u.status === 'Active' ? 'disabled' : ''}>Approve</button>
+                <button class="btn btn-sm btn-danger" onclick="setUserStatus('${u._id}', 'Suspended')" ${u.status === 'Suspended' ? 'disabled' : ''}>Suspend</button>
+              ` : '<small style="color: #64748b;">System Protected</small>'}
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="6" style="color: #64748b;">No registered user accounts found.</td></tr>';
+      }
+    }
+
+    async function setUserStatus(userId, status) {
+      const res = await DvnApi.updateUserStatus(userId, status);
+      if (res && res.success) {
+        DvnAuth.showToast('User status updated to ' + status);
+        loadUsers();
+        loadLogs();
+      }
+    }
+
+    // Dispatch Emergency Broadcast
+    async function dispatchEmergencyBroadcast() {
+      const input = document.getElementById('adminBroadcastInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+      const res = await DvnApi.sendBroadcast('Emergency Siren Dispatch', msg, 'CRITICAL');
+      if (res && res.success) {
+        DvnAuth.showToast('🚨 Siren alert broadcasted across network!');
+        input.value = '';
+        loadLogs();
+      }
+    }
+
+    // Load Audit Logs from MongoDB
+    async function loadLogs() {
+      const res = await DvnApi.getAdminLogs();
+      const tbody = document.getElementById('logsTableBody');
+      if (res && res.logs && res.logs.length) {
+        allLogs = res.logs;
+        renderLogs(allLogs);
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" style="color: #64748b;">No audit logs found.</td></tr>';
+      }
+    }
+
+    function renderLogs(logs) {
+      const tbody = document.getElementById('logsTableBody');
+      tbody.innerHTML = logs.map(l => {
+        const time = new Date(l.timestamp).toLocaleString();
+        return `
+          <tr>
+            <td style="white-space: nowrap; font-size: 0.85rem; color: #64748b;">${time}</td>
+            <td><span class="badge ${l.level === 'CRITICAL' ? 'pill-danger' : (l.level === 'AUDIT' ? 'pill-pending' : 'pill-approved')}">${l.level || 'INFO'}</span></td>
+            <td>${l.event}</td>
+            <td style="font-family: monospace; font-size: 0.85rem;">${l.sourceIp || '127.0.0.1'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Filter Logs (Preserving search filter capability)
+    function filterLogs() {
+      const query = document.getElementById('logSearch').value.toLowerCase();
+      const filtered = allLogs.filter(l =>
+        (l.event && l.event.toLowerCase().includes(query)) ||
+        (l.level && l.level.toLowerCase().includes(query)) ||
+        (l.sourceIp && l.sourceIp.toLowerCase().includes(query))
+      );
+      renderLogs(filtered);
+    }
+
+    loadStats();
+    loadUsers();
+    loadAdminHighlights();
+    loadLogs();
+  </script>
+</body>
+</html>

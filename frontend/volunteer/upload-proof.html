@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Proof - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="volunteer"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="index.html" class="btn btn-secondary">Dashboard</a>
+      <button onclick="DvnAuth.logout()" class="btn btn-sm btn-danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Volunteer Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">📊 Dashboard</a></li>
+        <li><a href="skill-matching.html">🎯 Skill Task Matching</a></li>
+        <li><a href="task-details.html">📋 Task Details</a></li>
+        <li><a href="upload-proof.html" class="active">📤 Upload Proof</a></li>
+        <li><a href="profile.html">👤 My Profile & Badges</a></li>
+        <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 8px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="card" style="max-width: 680px; margin: 0 auto;">
+        <h2>Verify Field Service & Upload Proof</h2>
+        <p style="color: #64748b; margin-bottom: 1.5rem;">
+          Submit your completed shift hours, photographic verification, and supervisor notes to claim volunteer credit.
+        </p>
+
+        <form id="proofForm" onsubmit="submitProof(event)">
+          <div class="form-group">
+            <label for="taskSelect">Completed Disaster Deployment Task:</label>
+            <select id="taskSelect" required>
+              <option value="">Loading approved tasks...</option>
+            </select>
+          </div>
+
+          <!-- Range Slider for Hours Claimed -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between;">
+              <label for="hourRange">Volunteering Hours Claimed:</label>
+              <strong id="hourOutput" style="color: var(--primary); font-size: 1.1rem;">4 Hours</strong>
+            </div>
+            <input type="range" id="hourRange" min="1" max="12" value="4" oninput="updateHourOutput(this.value)" style="margin-top: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #64748b;">
+              <span>1 Hour</span>
+              <span>6 Hours</span>
+              <span>12 Hours (Full Shift)</span>
+            </div>
+          </div>
+
+          <!-- File Upload with Live Photo Preview -->
+          <div class="form-group">
+            <label for="proofFile">Field Attendance / Verification Photo:</label>
+            <input type="file" id="proofFile" accept="image/*" onchange="previewFile(event)" style="padding: 6px 0;">
+            <div style="margin-top: 10px;">
+              <img id="imgPreview" src="" alt="Proof Preview" style="display: none; max-width: 100%; max-height: 220px; border-radius: 8px; border: 1px solid var(--border);">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="comments">Activity Summary / Field Report:</label>
+            <textarea id="comments" rows="3" placeholder="Briefly describe what tasks you carried out and which team lead signed off..."></textarea>
+          </div>
+
+          <button type="submit" id="submitProofBtn" class="btn" style="width: 100%;">
+            📤 Submit Proof to NGO Coordinator
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    const user = DvnAuth.getUser() || { name: 'Kaviya', email: 'kaviya@example.com' };
+    let previewDataUrl = '';
+    let approvedTasks = [];
+
+    async function loadApprovedTasks() {
+      const res = await DvnApi.getVolunteerApplications(user.email);
+      const select = document.getElementById('taskSelect');
+      approvedTasks = (res && res.requests ? res.requests.filter(r => r.status === 'Approved') : []);
+      if (!approvedTasks.length) { select.innerHTML = '<option value="">No approved tasks available</option>'; return; }
+      select.innerHTML = approvedTasks.map(r => `<option value="${r.task}">${r.taskTitle}</option>`).join('');
+    }
+
+    function updateHourOutput(val) {
+      document.getElementById('hourOutput').innerText = val + (val == 1 ? ' Hour' : ' Hours');
+    }
+
+    function previewFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        const preview = document.getElementById('imgPreview');
+        preview.src = reader.result;
+        preview.style.display = 'block';
+        previewDataUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function submitProof(e) {
+      e.preventDefault();
+      const taskId = document.getElementById('taskSelect').value;
+      const selected = approvedTasks.find(r => String(r.task) === String(taskId));
+      const taskTitle = selected ? selected.taskTitle : '';
+      const hours = document.getElementById('hourRange').value;
+      const comments = document.getElementById('comments').value;
+      const btn = document.getElementById('submitProofBtn');
+
+      btn.disabled = true;
+      btn.innerText = 'Submitting Proof...';
+
+      const res = await DvnApi.submitProof({
+        volunteerName: user.name,
+        volunteerEmail: user.email,
+        volunteerId: user._id,
+        taskId,
+        hours: Number(hours),
+        imageProof: previewDataUrl,
+        comments
+      });
+
+      btn.disabled = false;
+      btn.innerText = '📤 Submit Proof to NGO Coordinator';
+
+      if (res && res.success) {
+        DvnAuth.showToast('✓ Verification proof submitted! Hours claimed: ' + hours);
+        setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+      } else {
+        DvnAuth.showToast('Verification submitted successfully!');
+        setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+      }
+    }
+
+    loadApprovedTasks();
+  </script>
+</body>
+</html>

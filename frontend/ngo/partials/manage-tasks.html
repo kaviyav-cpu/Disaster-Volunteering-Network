@@ -1,0 +1,22 @@
+<div class="page">
+  <h2 class="page-title">Manage Tasks</h2>
+
+  <div class="search-row">
+    <input type="text" ng-model="vm.searchText" placeholder="Search tasks..." class="search-input">
+  </div>
+
+  <div class="task-card" ng-repeat="t in vm.tasks | filter: vm.searchText">
+    <div class="task-card-main">
+      <h3>{{ ::t.title }}</h3>
+      <span class="pill" ng-class="vm.statusClass(t.status)">{{ t.status }}</span>
+      <p class="required-label">{{ ::t.location }} &middot; {{ ::t.date }} &middot; {{ t.volunteersAssigned }}/{{ t.capacity }} volunteers</p>
+    </div>
+    <div class="row-actions">
+      <button class="btn-apply" ng-if="t.status !== 'Published'" ng-click="vm.publish(t)">Publish</button>
+      <button class="btn-apply" ng-if="t.status === 'Published'" ng-click="vm.close(t)">Close</button>
+      <button class="btn-reject" ng-click="vm.remove(t)">Delete</button>
+    </div>
+  </div>
+
+  <p class="empty-state" ng-if="(vm.tasks | filter: vm.searchText).length === 0">No tasks match "{{ vm.searchText }}".</p>
+</div>

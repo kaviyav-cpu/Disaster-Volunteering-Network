@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer Profile - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="volunteer"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="index.html">Dashboard</a>
+      <button onclick="DvnAuth.logout()" class="btn btn-sm btn-danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Volunteer Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">📊 Dashboard</a></li>
+        <li><a href="skill-matching.html">🎯 Skill Task Matching</a></li>
+        <li><a href="task-details.html">📋 Task Details</a></li>
+        <li><a href="upload-proof.html">📤 Upload Proof</a></li>
+        <li><a href="profile.html" class="active">👤 My Profile & Badges</a></li>
+        <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 8px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div style="display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 1.5rem;">
+        <!-- Editable Profile Card -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2>Volunteer Profile</h2>
+            <button id="editToggleBtn" class="btn btn-sm btn-secondary" onclick="toggleEdit()">✏️ Edit Profile</button>
+          </div>
+
+          <form id="profileForm" onsubmit="saveProfile(event)">
+            <div class="form-group">
+              <label for="profName">Full Name</label>
+              <input type="text" id="profName" disabled required>
+            </div>
+            <div class="form-group">
+              <label for="profEmail">Email Address</label>
+              <input type="email" id="profEmail" disabled readonly>
+            </div>
+            <div class="form-group">
+              <label for="profCity">Deployment City / Region</label>
+              <input type="text" id="profCity" disabled>
+            </div>
+            <div class="form-group">
+              <label for="profExp">Field Response Experience</label>
+              <textarea id="profExp" rows="3" disabled></textarea>
+            </div>
+
+            <button type="submit" id="saveProfBtn" class="btn" style="display: none; width: 100%;">
+              💾 Save Profile Updates to MongoDB
+            </button>
+          </form>
+        </div>
+
+        <!-- Verified Skills & Reward Badges -->
+        <div>
+          <!-- Skill Certifications with dynamic Add Skill -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3>Verified Certifications</h3>
+              <button class="btn btn-sm" onclick="addSkillCertification()">+ Add Certification</button>
+            </div>
+            <p style="font-size: 0.85rem; color: #64748b; margin: 4px 0 10px;">Your verified credentials evaluated by the matching algorithm:</p>
+            <div id="skillsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <!-- Dynamic skills -->
+            </div>
+          </div>
+
+          <!-- Reward & Badge Generator -->
+          <div class="card">
+            <h3>Disaster Volunteer Rewards</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Earned points through verified emergency service:</p>
+
+            <div style="margin: 12px 0; text-align: center; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+              <div style="font-size: 2.2rem; font-weight: 700; color: var(--primary-dark);" id="pointsCount">240</div>
+              <div style="font-size: 0.82rem; color: #64748b;">Total Verified Impact Points</div>
+              <div style="margin-top: 6px;">
+                <span id="badgeEligibility" class="badge pill-pending">NGO approval required</span>
+              </div>
+            </div>
+
+            <div id="badgeOutput" style="margin-top: 10px; font-weight: 600; color: #065f46; text-align: center; min-height: 1.5rem;"></div>
+
+            <button id="generateBadgeBtn" class="btn btn-sm btn-secondary" style="width: 100%; margin-top: 6px;" onclick="generateBadge()" disabled>
+              🏅 Generate Official Volunteer Credential Badge
+            </button>
+          </div>
+        </div>
+      </div>
+        <div class="card" style="margin-top:1.5rem; grid-column:1 / -1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div>
+              <h3>📋 Task History</h3>
+              <p style="font-size:.85rem;color:#64748b;margin-top:4px;">Your applications and completed tasks are tracked here.</p>
+            </div>
+            <span class="badge" id="historyCount">0 Tasks</span>
+          </div>
+          <div style="overflow-x:auto;margin-top:12px;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);">Task</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);">Applied On</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);">Status</th><th style="text-align:left;padding:8px;border-bottom:1px solid var(--border);">Proof</th></tr></thead>
+              <tbody id="historyBody"><tr><td colspan="4" style="padding:12px;color:#64748b;">Loading history...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    let isEditMode = false;
+    let currentUser = DvnAuth.getUser() || { name: 'Kaviya', email: 'kaviya@example.com' };
+
+
+    async function loadHistory() {
+      const res = await DvnApi.getVolunteerHistory(currentUser.email);
+      const body = document.getElementById('historyBody');
+      const count = document.getElementById('historyCount');
+      const history = (res && res.history) || [];
+      count.innerText = history.length + (history.length === 1 ? ' Task' : ' Tasks');
+      if (!history.length) {
+        body.innerHTML = '<tr><td colspan="4" style="padding:12px;color:#64748b;">No task applications yet. Apply for a task to start your history.</td></tr>';
+        return;
+      }
+      body.innerHTML = history.map(h => {
+        const completed = h.historyStatus === 'Completed';
+        return `<tr>
+          <td style="padding:9px;border-bottom:1px solid var(--border);"><strong>${h.taskTitle}</strong></td>
+          <td style="padding:9px;border-bottom:1px solid var(--border);">${new Date(h.appliedAt).toLocaleDateString()}</td>
+          <td style="padding:9px;border-bottom:1px solid var(--border);"><span class="badge ${completed ? 'pill-approved' : 'pill-pending'}">${completed ? '✓ Completed' : 'Applied'}</span></td>
+          <td style="padding:9px;border-bottom:1px solid var(--border);">${h.proofStatus ? 'Uploaded (' + h.proofStatus + ')' : 'Not uploaded'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function loadProfile() {
+      const res = await DvnApi.getVolunteerProfile(currentUser.email);
+      if (res && res.user) {
+        const u = res.user;
+        document.getElementById('profName').value = u.name || '';
+        document.getElementById('profEmail').value = u.email || '';
+        document.getElementById('profCity').value = u.city || 'California, USA';
+        document.getElementById('profExp').value = u.experience || '2 years active field response in flood and storm zones.';
+        document.getElementById('pointsCount').innerText = u.points || 240;
+
+        renderSkills(u.skills || ['EMT Certified', 'Water Rescue', 'First Aid']);
+      }
+    }
+
+    function renderSkills(skills) {
+      const c = document.getElementById('skillsContainer');
+      c.innerHTML = skills.map(s => `
+        <span class="badge" style="font-size: 0.85rem; padding: 5px 12px; background: #e0f2fe; color: #0369a1;">
+          🛡️ ${s}
+        </span>
+      `).join('');
+    }
+
+    function toggleEdit() {
+      isEditMode = !isEditMode;
+      document.getElementById('profName').disabled = !isEditMode;
+      document.getElementById('profCity').disabled = !isEditMode;
+      document.getElementById('profExp').disabled = !isEditMode;
+      document.getElementById('saveProfBtn').style.display = isEditMode ? 'block' : 'none';
+      document.getElementById('editToggleBtn').innerText = isEditMode ? 'Cancel' : '✏️ Edit Profile';
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      const name = document.getElementById('profName').value;
+      const city = document.getElementById('profCity').value;
+      const experience = document.getElementById('profExp').value;
+
+      const res = await DvnApi.updateVolunteerProfile({
+        email: currentUser.email,
+        name,
+        city,
+        experience
+      });
+
+      if (res && res.success) {
+        DvnAuth.showToast('Profile updated successfully in MongoDB!');
+        currentUser.name = name;
+        DvnAuth.setUser(currentUser);
+        toggleEdit();
+      }
+    }
+
+    async function addSkillCertification() {
+      const skill = prompt('Enter new disaster skill certification (e.g. Shelter Logistics, Hazmat Responder, CPR):', 'Shelter Logistics');
+      if (skill) {
+        const res = await DvnApi.addVolunteerSkill(currentUser.email, skill);
+        if (res && res.skills) {
+          renderSkills(res.skills);
+          DvnAuth.showToast('Added ' + skill + ' to verified credentials!');
+        }
+      }
+    }
+
+    async function loadBadgeEligibility() {
+      const res = await DvnApi.getBadgeEligibility(currentUser.email);
+      const badge = document.getElementById('badgeEligibility');
+      const btn = document.getElementById('generateBadgeBtn');
+      if (res && res.eligible) {
+        badge.className = 'badge pill-approved';
+        badge.innerText = '✓ NGO-approved proof — badge unlocked';
+        btn.disabled = false;
+        if (res.badges && res.badges.includes('Certified Disaster Volunteer Specialist')) {
+          document.getElementById('badgeOutput').innerText = '🏅 Certified Disaster Volunteer Specialist badge already issued.';
+        }
+      } else {
+        badge.className = 'badge pill-pending';
+        badge.innerText = 'NGO approval required';
+        btn.disabled = true;
+      }
+    }
+
+    async function generateBadge() {
+      const btn = document.getElementById('generateBadgeBtn');
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const res = await DvnApi.generateBadge(currentUser.email);
+      if (res && res.success) {
+        document.getElementById('badgeOutput').innerText = '🏅 ' + res.badge + ' Generated (ID: ' + res.badgeId + ')';
+        DvnAuth.showToast('Credential badge generated!');
+      } else {
+        DvnAuth.showToast((res && res.message) || 'Badge generation requires NGO approval.');
+        btn.disabled = false;
+      }
+    }
+
+    loadProfile();
+    loadHistory();
+    loadBadgeEligibility();
+  </script>
+</body>
+</html>

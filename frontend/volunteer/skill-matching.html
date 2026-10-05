@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill-Based Task Matching - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <script>(function(){var u=JSON.parse(localStorage.getItem("dvn_user")||"null");if(!u||u.role!=="volunteer"){window.location.href="/login.html";}})();</script>
+  <header>
+    <a href="../index.html" class="header-brand">
+      <img src="../assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Skill-Based Task Engine</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="index.html" class="login-btn">Dashboard</a>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <h3>Volunteer Menu</h3>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">📊 Dashboard</a></li>
+        <li><a href="skill-matching.html" class="active">🎯 Skill Task Matching</a></li>
+        <li><a href="task-details.html">📋 Task Details</a></li>
+        <li><a href="upload-proof.html">📤 Upload Proof</a></li>
+        <li><a href="profile.html">👤 My Profile & Badges</a></li>
+        <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 8px;">
+          <a href="../index.html">🏠 Home Portal</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <section class="card">
+        <h2>Automated Skill Recommendations</h2>
+        <p style="color: #64748b; margin-bottom: 12px;">Filter deployments matching your verified training and certifications:</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-sm" onclick="filterBySkill('all')">Show All</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterBySkill('EMT')">🚑 EMT First Aid</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterBySkill('Rescue')">🌊 Water Rescue</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterBySkill('Food')">🍲 Food Supply</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterBySkill('Fitness')">💪 Physical Logistics</button>
+        </div>
+        <audio id="matchSound" src="../assets/audio/alexis_gaming_cam-accepter-2-394924.mp3"></audio>
+      </section>
+
+      <div id="taskList">
+        <!-- Dynamically loaded from MongoDB -->
+        <p style="color: #64748b; padding: 1rem;">Loading tasks from MongoDB...</p>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    let allTasks = [];
+    let appliedTaskIds = new Set();
+    const currentUser = DvnAuth.getUser() || { name: 'Kaviya', email: 'kaviya@example.com' };
+
+    async function loadTasks() {
+      const [res, appRes] = await Promise.all([DvnApi.getTasks(), DvnApi.getVolunteerApplications(currentUser.email)]);
+      appliedTaskIds = new Set((appRes && appRes.requests || []).map(r => String(r.task)));
+      if (res && res.tasks) {
+        allTasks = res.tasks;
+        renderTasks(allTasks);
+      }
+    }
+
+    function renderTasks(tasks) {
+      const container = document.getElementById('taskList');
+      if (!tasks.length) {
+        container.innerHTML = '<div class="card"><p style="color: #64748b;">No disaster missions match the selected skill criteria.</p></div>';
+        return;
+      }
+      container.innerHTML = tasks.map(t => `
+        <section class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3>${t.title}</h3>
+            <p style="color: #64748b; font-size: 0.9rem; margin-top: 4px;">
+              📍 Location: ${t.location} • NGO: ${t.ngoName || 'Disaster Response'} • Requires: ${(t.skillsRequired || []).join(', ') || 'General'}
+            </p>
+            <div style="margin-top: 6px;">
+              <span class="badge" style="background: var(--success-light); color: #065f46;">${t.matchRating || 95}% Skill Match</span>
+              <span class="badge">${t.volunteersAssigned || 0} / ${t.capacity || 10} Slots Filled</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <a href="task-details.html?id=${t._id}" class="btn btn-secondary btn-sm">View Details</a>
+            <button class="btn btn-sm ${appliedTaskIds.has(String(t._id)) ? 'btn-success' : ''}" onclick="applyTask('${t._id}', '${t.title}')" ${appliedTaskIds.has(String(t._id)) ? 'disabled' : ''}>${appliedTaskIds.has(String(t._id)) ? '✓ Applied' : 'Apply Now'}</button>
+          </div>
+        </section>
+      `).join('');
+    }
+
+    function filterBySkill(skill) {
+      const sound = document.getElementById('matchSound');
+      if (sound) sound.play().catch(e => console.log(e));
+
+      if (skill === 'all') {
+        renderTasks(allTasks);
+      } else {
+        const filtered = allTasks.filter(t => {
+          const matchSkill = t.skillsRequired && t.skillsRequired.some(s => s.toLowerCase().includes(skill.toLowerCase()));
+          const matchTitle = t.title.toLowerCase().includes(skill.toLowerCase());
+          return matchSkill || matchTitle;
+        });
+        renderTasks(filtered);
+      }
+    }
+
+    async function applyTask(id, title) {
+      const res = await DvnApi.applyForTask(id, {
+        volunteerName: currentUser.name,
+        volunteerEmail: currentUser.email,
+        skills: currentUser.skills || [],
+        volunteerId: currentUser._id,
+        notes: 'Applied via automated skill matching engine.'
+      });
+      if (res && res.success) {
+        appliedTaskIds.add(String(id));
+        renderTasks(allTasks);
+        DvnAuth.showToast('✓ Application submitted for ' + title + ' — Status: Applied');
+      } else if (res && res.message) {
+        DvnAuth.showToast(res.message);
+      }
+    }
+
+    loadTasks();
+  </script>
+</body>
+</html>

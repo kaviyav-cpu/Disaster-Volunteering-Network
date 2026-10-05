@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Disaster Volunteering Network</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+      <h1>Disaster Volunteering Network</h1>
+    </a>
+    <div class="top-right-nav">
+      <a href="index.html">Home</a>
+      <a href="register.html" class="btn btn-secondary">Register</a>
+    </div>
+  </header>
+
+  <main class="auth-container">
+    <div class="auth-card">
+      <h2>Welcome Back</h2>
+      <p style="margin-bottom: 1.25rem; color: #64748b;">
+        Sign in to access your Disaster Response Dashboard
+      </p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required placeholder="name@example.com" >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="••••••••" >
+          <label style="font-weight: normal; font-size: 0.85rem; margin-top: 6px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="togglePass" onchange="togglePasswordVisibility(this)">
+            Show Password
+          </label>
+        </div>
+
+        <div id="loginMessage" style="font-size: 0.88rem; margin-bottom: 10px; color: var(--danger); display: none;"></div>
+
+        <button type="submit" id="submitBtn" class="btn" style="width: 100%;">Sign In</button>
+      </form>
+
+      <div class="demo-login-box">
+        <p style="font-size: 0.9rem; font-weight: 700; color: #334155; margin-bottom:10px;">Choose Portal</p>
+        <div class="demo-btns">
+          <button type="button" class="demo-btn" onclick="selectRole('volunteer')">🤝 Volunteer Login</button>
+          <button type="button" class="demo-btn" onclick="selectRole('ngo')">🏢 NGO Login</button>
+          <button type="button" class="demo-btn" onclick="selectRole('admin')">🛡️ Admin Login</button>
+        </div>
+        <p id="roleHint" style="font-size:.8rem;color:#64748b;margin-top:8px;">Select your portal, then enter your account credentials.</p>
+      </div>
+
+      <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+        Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 600;">Register here</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="toast"></div>
+
+  <footer>
+    <p>&copy; 2026 Disaster Volunteering Network — Connected to Node.js & MongoDB Compass</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function togglePasswordVisibility(checkbox) {
+      const passInput = document.getElementById("password");
+      if (passInput) passInput.type = checkbox.checked ? "text" : "password";
+    }
+
+    function selectRole(role) {
+      const configs = {
+        volunteer: ['kaviya@example.com', 'user', 'Volunteer Login selected'],
+        ngo: ['contact@redcross.org', 'ngo', 'NGO Login selected'],
+        admin: ['admin@dvn.org', 'admin', 'Admin Login selected']
+      };
+      const c = configs[role];
+      document.getElementById('email').value = c[0];
+      document.getElementById('password').value = c[1];
+      document.getElementById('roleHint').innerText = c[2] + '. You can replace the credentials with another account.';
+    }
+
+    function fillDemo(email, pass) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = pass;
+      DvnAuth.showToast('Selected demo credentials for: ' + email);
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('loginMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      msg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Verifying...';
+
+      const res = await DvnApi.login(email, password);
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Sign In';
+
+      if (res && res.success && res.user) {
+        DvnAuth.setUser(res.user);
+        DvnAuth.setToken(res.token);
+        DvnAuth.showToast('Login successful! Redirecting to ' + res.user.role.toUpperCase() + ' portal...');
+
+        setTimeout(() => {
+          if (res.user.role === 'admin') {
+            window.location.href = 'admin/index.html';
+          } else if (res.user.role === 'ngo') {
+            window.location.href = 'ngo/index.html';
+          } else {
+            window.location.href = 'volunteer/index.html';
+          }
+        }, 800);
+      } else {
+        msg.innerText = (res && res.message) ? res.message : 'Invalid credentials. Please verify your email and password.';
+        msg.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
